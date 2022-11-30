@@ -1,0 +1,4 @@
+# Khatharsis's Answers to AoC 2022
+Hey there ! These are my answers to Advent of Code 2022's problems !
+This year, I'm doing it in Native Kotlin !
+Also, to do this with your inputs, don't forget to create a file called "Cookie" and to drop your auth cookie in that !
