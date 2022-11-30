@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{932106cd-a996-4717-b304-dbb4f89b00e9}</ProjectGuid>
-    <RootNamespace>AdventOfCode</RootNamespace>
+    <ProjectGuid>{7109ea20-e3d9-4844-917a-673c2ee591d7}</ProjectGuid>
+    <RootNamespace>AdventOfAkasuna</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AdventOfCode.cpp" />
+    <ClCompile Include="AdventOfAkasuna.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
