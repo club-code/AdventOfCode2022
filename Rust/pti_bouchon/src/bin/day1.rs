@@ -1,5 +1,5 @@
 use pti_bouchon::{print_solutions, Solver};
-use eyre::Result;
+use anyhow::Result;
 
 fn main() {
     print_solutions(Day1, "resources/test.txt")
