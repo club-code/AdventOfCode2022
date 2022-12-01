@@ -1,7 +1,7 @@
 use pti_bouchon::{print_solutions, Solver};
 
 fn main() {
-    print_solutions(Day1, "resources/day1.txt")
+    print_solutions::<Day1>("resources/day1.txt");
 }
 
 struct Day1;

@@ -11,7 +11,7 @@ pub trait Solver {
     fn part2(_parsed_input: &Self::ParsedInput) -> Self::Output;
 }
 
-pub fn print_solutions<S: Solver>(_: S, path: impl AsRef<Path>) {
+pub fn print_solutions<S: Solver>(path: impl AsRef<Path>) {
     let input = BufReader::new(File::open(path).unwrap()).lines().map(|l| l.unwrap()).collect();
     let parsed_input = S::parse(input);
     println!("Part1: {:?}", S::part1(&parsed_input));
