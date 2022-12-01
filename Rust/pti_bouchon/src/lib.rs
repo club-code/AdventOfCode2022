@@ -2,11 +2,7 @@ use std::fmt;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
-use eyre::{Result, Report};
-
-pub fn parse_stdin() -> Vec<String> {
-    std::io::stdin().lines().map(|l| l.unwrap()).collect()
-}
+use anyhow::{Error, Result};
 
 #[derive(Debug)]
 struct UnImplemented;
@@ -25,7 +21,7 @@ pub trait Solver {
 
     fn parse(input: impl Iterator<Item = String>) -> Self::ParsedInput;
     fn part1(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output>;
-    fn part2(&self, _parsed_input: &Self::ParsedInput) -> Result<Self::Output> { Err(Report::new(UnImplemented)) }
+    fn part2(&self, _parsed_input: &Self::ParsedInput) -> Result<Self::Output> { Err(Error::from(UnImplemented)) }
 }
 
 pub fn print_solutions<S: Solver>(solver: S, path: impl AsRef<Path>) {

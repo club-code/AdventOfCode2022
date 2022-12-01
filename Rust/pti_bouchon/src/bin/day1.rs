@@ -12,14 +12,14 @@ impl Solver for Day1 {
     type Output = usize;
 
     fn parse(input: impl Iterator<Item = String>) -> Self::ParsedInput {
-        vec![]
+        input.map(|s| s.parse().unwrap()).collect()
     }
 
     fn part1(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> {
-        Ok(5)
+        Ok(parsed_input.capacity())
     }
 
-    // fn part2(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> {
-    //     todo!()
-    // }
+     fn part2(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> {
+         self.part1(parsed_input)
+     }
 }
