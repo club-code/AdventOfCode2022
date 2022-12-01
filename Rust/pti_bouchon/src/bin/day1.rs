@@ -1,19 +1,25 @@
-use anyhow::Result;
-use pti_bouchon::parse_stdin;
+use pti_bouchon::{print_solutions, Solver};
+use eyre::Result;
 
-fn main() -> Result<()> {
-   let input = parse_stdin();
-    println!("Part1: {:?}", part1(&input)?);
-    println!("Part2: {:?}", part2(&input)?);
-
-    Ok(())
+fn main() {
+    print_solutions(Day1, "resources/test.txt")
 }
 
-fn part1(input: &Vec<String>) -> Result<String> {
+struct Day1;
 
-    Ok(format!("{input:?}"))
-}
+impl Solver for Day1 {
+    type ParsedInput = Vec<usize>;
+    type Output = usize;
 
-fn part2(input: &Vec<String>) -> Result<String> {
-    Ok(format!("{input:?}"))
+    fn parse(input: impl Iterator<Item = String>) -> Self::ParsedInput {
+        vec![]
+    }
+
+    fn part1(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> {
+        Ok(5)
+    }
+
+    // fn part2(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> {
+    //     todo!()
+    // }
 }
