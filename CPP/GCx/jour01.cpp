@@ -19,13 +19,12 @@ int jour01partie1(std::string path){
     while (std::getline(inputFile, line)){
         if (line.length() == 1){
             max = std::max(max, cur);
-            std::cout << "cur = "<<cur<<" & max = "<<max<< std::endl;
             cur = 0;
         } else {
             cur += std::stoi(line);
         }
     }
-    max = std::max(max, cur);
+    max = std::max(max, cur);    
     return max;
 }
 
@@ -42,7 +41,6 @@ int jour01partie2(std::string path){
 
     while (std::getline(inputFile, line)){
         if (line.length() == 1){
-            // std::cout << "cur = "<<cur<<" & max = "<<max<< std::endl;
             if (cur > vec[0]){
                 vec.insert(vec.begin(), cur);
             } else if (cur > vec[1]){
@@ -81,7 +79,7 @@ int main(int argc, char** argv){
         } else if (std::strcmp(argv[2], "in")==0){
             path = "./Input/01in";
         }
-        jour01partie1(path);
+        std::cout << jour01partie1(path) << std::endl;
     } else if (argc == 3 && std::strcmp(argv[1], "2")==0){
         std::string path;
         if (std::strcmp(argv[2], "ex") == 0){
@@ -89,7 +87,7 @@ int main(int argc, char** argv){
         } else if (std::strcmp(argv[2], "in") == 0){
             path = "./Input/01in";
         }
-        std::cout << "res = "<< jour01partie2(path);
+        std::cout << jour01partie2(path) << std::endl;
     }
     return 0;
 }
