@@ -4,6 +4,8 @@
 **/.vscode/
 **/out/
 **/*.sln.iml
+**/.vs/
+**/x64/
 
 # Executables
 *.exe
