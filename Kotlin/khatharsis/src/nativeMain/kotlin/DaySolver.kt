@@ -19,7 +19,6 @@ open class DaySolver(val day: Int, val name: String) {
     val data: List<String> = run {
         val command = "curl https://adventofcode.com/2022/day/$day/input " +
                 "-H \"Cookie:session=$cookie\""
-        println(command)
         val fp = popen(command, "r")
 
         val stdout = buildString {
