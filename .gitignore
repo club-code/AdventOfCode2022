@@ -1,5 +1,6 @@
 # IDE caches etc
 **/.idea/
+**/.fleet/
 **/.vscode/
 **/out/
 # Rust ignored files
