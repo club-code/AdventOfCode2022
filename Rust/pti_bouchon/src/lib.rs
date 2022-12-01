@@ -25,7 +25,7 @@ pub trait Solver {
 
     fn parse(input: impl Iterator<Item = String>) -> Self::ParsedInput;
     fn part1(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output>;
-    fn part2(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> { Err(Report::new(UnImplemented)) }
+    fn part2(&self, _parsed_input: &Self::ParsedInput) -> Result<Self::Output> { Err(Report::new(UnImplemented)) }
 }
 
 pub fn print_solutions<S: Solver>(solver: S, path: impl AsRef<Path>) {
