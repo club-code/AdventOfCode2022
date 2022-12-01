@@ -1,7 +1,7 @@
 # AdventOfCode2022
 The solutions of the Advent of Code 2022 made by the members of the Club Code, Télécom SudParis's coding club.
 
-##Languages
+## Languages
 
 ### C
 * Loulou
