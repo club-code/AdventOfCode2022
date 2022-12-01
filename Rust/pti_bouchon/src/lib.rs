@@ -3,7 +3,6 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
 pub trait Solver {
-//    type ParsedInput;
     type Output: fmt::Debug;
 
     fn parse(input: Vec<String>) -> Self;

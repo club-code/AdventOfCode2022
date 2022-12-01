@@ -7,7 +7,6 @@ fn main() {
 struct Day1(Vec<Vec<usize>>);
 
 impl Solver for Day1 {
-//    type ParsedInput = Vec<Vec<usize>>;
     type Output = usize;
 
     fn parse(input: Vec<String>) -> Self {
