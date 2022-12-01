@@ -1,19 +1,25 @@
+use pti_bouchon::{print_solutions, Solver};
 use anyhow::Result;
-use pti_bouchon::parse_stdin;
 
-fn main() -> Result<()> {
-   let input = parse_stdin();
-    println!("Part1: {:?}", part1(&input)?);
-    println!("Part2: {:?}", part2(&input)?);
-
-    Ok(())
+fn main() {
+    print_solutions(Day1, "resources/test.txt")
 }
 
-fn part1(input: &Vec<String>) -> Result<String> {
+struct Day1;
 
-    Ok(format!("{input:?}"))
-}
+impl Solver for Day1 {
+    type ParsedInput = Vec<usize>;
+    type Output = usize;
 
-fn part2(input: &Vec<String>) -> Result<String> {
-    Ok(format!("{input:?}"))
+    fn parse(input: impl Iterator<Item = String>) -> Self::ParsedInput {
+        input.map(|s| s.parse().unwrap()).collect()
+    }
+
+    fn part1(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> {
+        Ok(parsed_input.capacity())
+    }
+
+     fn part2(&self, parsed_input: &Self::ParsedInput) -> Result<Self::Output> {
+         self.part1(parsed_input)
+     }
 }
