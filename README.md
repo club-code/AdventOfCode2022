@@ -3,9 +3,6 @@ The solutions of the Advent of Code 2022 made by the members of the Club Code, T
 
 ## Languages
 
-### C
-* Loulou
-
 ### C++
 * Akasuna
 * GCx
