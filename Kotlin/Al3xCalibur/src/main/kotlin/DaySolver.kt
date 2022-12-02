@@ -11,7 +11,7 @@ import kotlin.time.measureTime
 
 
 // Gratuitously stolen from Khatharsis repo, but tweaked for jvm Kotlin
-abstract class DaySolver(val day: Int, val name: String) {
+open class DaySolver(val day: Int, val name: String) {
     open fun firstPart(): String = "First part isn't done yet."
     open fun secondPart(): String = "Second part isn't done yet."
 
