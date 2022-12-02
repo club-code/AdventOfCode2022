@@ -2,14 +2,14 @@
 pub enum RockPaperScissor {
     Rock = 1,
     Paper = 2,
-    Scissor = 3
+    Scissors = 3
 }
 
 #[derive(Debug)]
 pub enum MatchScore {
     Win = 6,
     Equality = 3,
-    Loose = 0
+    Lose = 0
 }
 
 impl RockPaperScissor {
@@ -18,22 +18,22 @@ impl RockPaperScissor {
             Self::Rock => {
                 match other {
                     RockPaperScissor::Rock => MatchScore::Equality,
-                    RockPaperScissor::Paper => MatchScore::Loose,
-                    RockPaperScissor::Scissor => MatchScore::Win,
+                    RockPaperScissor::Paper => MatchScore::Lose,
+                    RockPaperScissor::Scissors => MatchScore::Win,
                 }
             },
             Self::Paper => {
                 match other {
                     RockPaperScissor::Rock => MatchScore::Win,
                     RockPaperScissor::Paper => MatchScore::Equality,
-                    RockPaperScissor::Scissor => MatchScore::Loose,
+                    RockPaperScissor::Scissors => MatchScore::Lose,
                 }
             },
-            Self::Scissor => {
+            Self::Scissors => {
                 match other {
-                    RockPaperScissor::Rock => MatchScore::Loose,
+                    RockPaperScissor::Rock => MatchScore::Lose,
                     RockPaperScissor::Paper => MatchScore::Win,
-                    RockPaperScissor::Scissor => MatchScore::Equality,
+                    RockPaperScissor::Scissors => MatchScore::Equality,
                 }
             },
         }
@@ -45,7 +45,7 @@ impl From<&str> for RockPaperScissor {
         match value.trim() {
             "A" | "X" => Self::Rock,
             "B" | "Y" => Self::Paper,
-            "C" | "Z" => Self::Scissor,
+            "C" | "Z" => Self::Scissors,
             _ => panic!("Error: {}", value)
         }
     }
@@ -55,16 +55,16 @@ impl RockPaperScissor {
     pub fn winner(&self) -> Self {
         match self {
             RockPaperScissor::Rock => RockPaperScissor::Paper,
-            RockPaperScissor::Paper => RockPaperScissor::Scissor,
-            RockPaperScissor::Scissor => RockPaperScissor::Rock
+            RockPaperScissor::Paper => RockPaperScissor::Scissors,
+            RockPaperScissor::Scissors => RockPaperScissor::Rock
         }
     }
 
     pub fn loser(&self) -> Self {
         match self {
-            RockPaperScissor::Rock => RockPaperScissor::Scissor,
+            RockPaperScissor::Rock => RockPaperScissor::Scissors,
             RockPaperScissor::Paper => RockPaperScissor::Rock,
-            RockPaperScissor::Scissor => RockPaperScissor::Paper
+            RockPaperScissor::Scissors => RockPaperScissor::Paper
         }
     }
 }

@@ -17,8 +17,8 @@ impl Solver for Day2 {
             input.into_iter()
                 .map(|line| {
                     let choices: Vec<&str> = line.split_whitespace().collect();
-                    let choice1 = choices[0].into();
-                    let choice2 = choices[1].into();
+                    let choice1: RockPaperScissor = choices[0].into();
+                    let choice2: RockPaperScissor = choices[1].into();
                     (choice1, choice2)
                 })
                 .collect()
@@ -43,7 +43,7 @@ impl Solver for Day2 {
                             (*other_choice as usize) + (other_choice.fight(other_choice) as usize)
                         }
                     // Need to Win
-                    RockPaperScissor::Scissor => {
+                    RockPaperScissor::Scissors => {
                         let my_choice = other_choice.winner();
                         (my_choice as usize) + (my_choice.fight(other_choice) as usize)
                     }
