@@ -7,3 +7,5 @@ fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf
         return@fold acc
     }
 }
+
+infix fun Int.modulo(modulo: Int) = ((this%modulo) + modulo) % modulo

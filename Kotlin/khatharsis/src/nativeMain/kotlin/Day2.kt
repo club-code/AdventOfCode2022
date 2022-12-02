@@ -54,3 +54,38 @@ class Day2 : DaySolver(2, "Rock Paper Scissors") {
     }
 }
 
+class Day2Alternative : DaySolver(2, "Rock Paper Scissors - Alternative Version") {
+    val newData = data.dropLast(1).map { it.split(' ') }
+    override fun firstPart(): String =
+        newData.map {
+            it.map { s ->
+                when (s) {
+                    "A", "X" -> 0 // Rock
+                    "B", "Y" -> 1 // Paper
+                    "C", "Z" -> 2 // Scissors
+                    else -> throw Exception("This shouldn't happen, unknown value: $$s")
+                }
+            }
+        }.sumOf {
+            (when ((it[1] - it[0]).modulo(3)) {
+                0 -> 3
+                1 -> 6
+                else -> 0
+            } + (it[1] + 1))
+        }.toString()
+
+    override fun secondPart(): String = newData.sumOf {
+        val first = when (it[0]) {
+            "A" -> 0 // Rock
+            "B" -> 1 // Paper
+            "C" -> 2 // Scissors
+            else -> throw Exception("This shouldn't happen, unknown value: $${it[0]}")
+        }
+        when (it[1]) {
+            "X" -> 0 + (first - 1).modulo(3) + 1 // We Lose
+            "Y" -> 3 + first + 1 // We tie
+            "Z" -> 6 + (first + 1).modulo(3) + 1// We win
+            else -> throw Exception("This shouldn't happen, unknown value: $${it[1]}")
+        }
+    }.toString()
+}
