@@ -4,9 +4,9 @@ use std::collections::HashSet;
 
 fn priority(c: char) -> u8 {
     if c.is_ascii_lowercase() {
-        c as u8 - 96
+        c as u8 - b'a' + 1
     } else {
-        c as u8 - 38
+        c as u8 - b'A' + 1
     }
 }
 
@@ -34,7 +34,10 @@ impl Rucksack {
 impl From<String> for Rucksack {
     fn from(value: String) -> Self {
         let (part1, part2) = value.split_at(value.len() / 2);
-        Self { compartment1: convert_str_compartment(part1), compartment2: convert_str_compartment(part2) }
+        Self {
+            compartment1: convert_str_compartment(part1),
+            compartment2: convert_str_compartment(part2),
+        }
     }
 }
 

@@ -12,19 +12,15 @@ fn main() {
 }
 
 fn parse(input: Vec<String>) -> Vec<Rucksack> {
-    input
-        .into_iter()
-        .map(|line| {
-            line.into()
-        })
-        .collect()
+    input.into_iter().map(|line| line.into()).collect()
 }
 
 fn part1(parsed_input: &[Rucksack]) -> usize {
     parsed_input
         .iter()
         .map(|rucksack| {
-            *(rucksack.compartment1
+            *(rucksack
+                .compartment1
                 .iter()
                 .find(|elm| rucksack.compartment2.contains(elm))
                 .unwrap()) as usize
@@ -33,11 +29,16 @@ fn part1(parsed_input: &[Rucksack]) -> usize {
 }
 
 fn part2(parsed_input: &[Rucksack]) -> usize {
-    parsed_input.chunks(3)
+    parsed_input
+        .chunks(3)
         .map(|rucksacks| {
             for elm in rucksacks[0].iter_union() {
-                if rucksacks.iter().skip(1).all(|rucksack| rucksack.contains(elm)) {
-                    return *elm as usize
+                if rucksacks
+                    .iter()
+                    .skip(1)
+                    .all(|rucksack| rucksack.contains(elm))
+                {
+                    return *elm as usize;
                 }
             }
             panic!("No common element !")
