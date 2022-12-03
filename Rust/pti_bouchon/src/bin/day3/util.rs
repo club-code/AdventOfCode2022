@@ -6,7 +6,7 @@ fn priority(c: char) -> u8 {
     if c.is_ascii_lowercase() {
         c as u8 - b'a' + 1
     } else {
-        c as u8 - b'A' + 1
+        c as u8 - b'A' + 27
     }
 }
 
