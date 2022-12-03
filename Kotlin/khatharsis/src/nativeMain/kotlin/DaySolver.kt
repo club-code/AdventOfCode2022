@@ -33,7 +33,7 @@ open class DaySolver(val day: Int, val name: String) {
         if (status != 0) {
             error("Failed to get input from server: status $status")
         }
-        stdout.split('\n')
+        stdout.split('\n').dropLast(1)
     }
 }
 

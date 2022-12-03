@@ -55,7 +55,7 @@ class Day2 : DaySolver(2, "Rock Paper Scissors") {
 }
 
 class Day2Alternative : DaySolver(2, "Rock Paper Scissors - Alternative Version") {
-    val newData = data.dropLast(1).map { it.split(' ') }
+    val newData = data.map { it.split(' ') }
     val stringToInt = mapOf(
         "A" to 0,
         "B" to 1,
