@@ -20,8 +20,6 @@ class Day3 : DaySolver(3, "Rucksack Reorganization") {
     // On pourrait utiliser des sets et des .intersect mais c'et beaucoup plus long (environ 20 fois plus)
 
 
-    private fun Char.priority() = when {
-        (this.isLowerCase()) -> this.toInt() - 97 + 1
-        else -> this.toInt() - 65 + 27
-    }
+    private fun Char.priority() = if (this.isLowerCase()) this - 'a' + 1
+        else this - 'A' + 27
 }
