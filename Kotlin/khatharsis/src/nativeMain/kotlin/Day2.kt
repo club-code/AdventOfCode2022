@@ -68,7 +68,7 @@ class Day2Alternative : DaySolver(2, "Rock Paper Scissors - Alternative Version"
     override fun firstPart(): String =
         newData.map { it.map { s -> stringToInt[s]!! } }
             .sumOf {
-                (when ((it[1] - it[0]).modulo(3)) {
+                (when ((it[1] - it[0]).mod(3)) {
                     0 -> 3
                     1 -> 6
                     else -> 0
@@ -78,9 +78,9 @@ class Day2Alternative : DaySolver(2, "Rock Paper Scissors - Alternative Version"
     override fun secondPart(): String = newData.sumOf {
         stringToInt[it[0]]!!.let { first ->
             when (it[1]) {
-                "X" -> 0 + (first - 1).modulo(3) + 1 // We Lose
+                "X" -> 0 + (first - 1).mod(3) + 1 // We Lose
                 "Y" -> 3 + first + 1 // We tie
-                "Z" -> 6 + (first + 1).modulo(3) + 1// We win
+                "Z" -> 6 + (first + 1).mod(3) + 1// We win
                 else -> throw Exception("This shouldn't happen, unknown value: $${it[1]}")
             }
         }
