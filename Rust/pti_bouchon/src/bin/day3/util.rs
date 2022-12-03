@@ -1,5 +1,3 @@
-use std::collections::hash_map::RandomState;
-use std::collections::hash_set::Union;
 use std::collections::HashSet;
 
 fn priority(c: char) -> u8 {
@@ -20,14 +18,16 @@ pub struct Rucksack {
 }
 
 impl Rucksack {
-    pub fn contains(&self, value: &u8) -> bool {
-        self.compartment1.contains(value) || self.compartment2.contains(value)
+    pub fn reunion(&self) -> HashSet<u8> {
+        self.compartment1.union(&self.compartment2).copied().collect()
     }
-}
 
-impl Rucksack {
-    pub fn iter_union(&self) -> Union<u8, RandomState> {
-        self.compartment1.union(&self.compartment2)
+    pub fn intersection(rucksacks: &[Rucksack]) -> usize {
+        let mut intersection = rucksacks[0].reunion();
+        for elms in rucksacks.iter().skip(1).map(|rucksack| rucksack.reunion()) {
+            intersection = intersection.intersection(&elms).copied().collect();
+        }
+        intersection.into_iter().map(|e| e as usize).sum()
     }
 }
 

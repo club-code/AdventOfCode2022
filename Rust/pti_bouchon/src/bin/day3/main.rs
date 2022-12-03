@@ -19,11 +19,7 @@ fn part1(parsed_input: &[Rucksack]) -> usize {
     parsed_input
         .iter()
         .map(|rucksack| {
-            *(rucksack
-                .compartment1
-                .iter()
-                .find(|elm| rucksack.compartment2.contains(elm))
-                .unwrap()) as usize
+            rucksack.compartment1.intersection(&rucksack.compartment2).map(|e| *e as usize).sum::<usize>()
         })
         .sum()
 }
@@ -32,16 +28,7 @@ fn part2(parsed_input: &[Rucksack]) -> usize {
     parsed_input
         .chunks(3)
         .map(|rucksacks| {
-            for elm in rucksacks[0].iter_union() {
-                if rucksacks
-                    .iter()
-                    .skip(1)
-                    .all(|rucksack| rucksack.contains(elm))
-                {
-                    return *elm as usize;
-                }
-            }
-            panic!("No common element !")
+            Rucksack::intersection(rucksacks)
         })
         .sum()
 }
