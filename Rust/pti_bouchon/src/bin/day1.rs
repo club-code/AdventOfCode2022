@@ -1,36 +1,38 @@
-use pti_bouchon::{print_solutions, Solver};
+use pti_bouchon::parse_lines;
 
 fn main() {
-    print_solutions::<Day1>("resources/day1.txt");
+    let lines = parse_lines("resources/day1.txt");
+    let parsed_input = parse(lines);
+    println!("Part1: {}", part1(&parsed_input));
+    println!("Part1: {}", part2(&parsed_input));
 }
 
-struct Day1(Vec<Vec<usize>>);
+fn parse(input: Vec<String>) -> Vec<Vec<usize>> {
+    input
+        .split(|line| line.is_empty())
+        .map(|elf_bag| {
+            elf_bag
+                .iter()
+                .map(|calorie| calorie.parse().unwrap())
+                .collect()
+        })
+        .collect()
+}
 
-impl Solver for Day1 {
-    type Output = usize;
+fn part1(parsed_input: &[Vec<usize>]) -> usize {
+    parsed_input
+        .iter()
+        .map(|calories| calories.iter().sum())
+        .max()
+        .unwrap()
+}
 
-    fn parse(input: Vec<String>) -> Self {
-        Self(input.split(|line| line.is_empty()).map(|elf_bag| elf_bag.iter().map(|calorie| calorie.parse().unwrap()).collect()).collect())
-    }
+fn part2(parsed_input: &[Vec<usize>]) -> usize {
+    let mut elf_calories: Vec<usize> = parsed_input
+        .iter()
+        .map(|calories| calories.iter().sum())
+        .collect();
 
-    fn part1(&self) -> Self::Output {
-        self.0.iter().map(|calories| calories.iter().sum()).max().unwrap()
-    }
-
-     fn part2(&self) -> Self::Output {
-         let mut elf_calories: Vec<usize> = self.0.iter().map(|calories| calories.iter().sum()).collect();
-         elf_calories.sort_by(|a, b| b.cmp(a)); // Sort by descending order
-         elf_calories.into_iter().take(3).sum()
-
-         // Otherwise
-//         let mut max_calories: [usize; 3] = [elf_calories[0], elf_calories[1], elf_calories[2]];
-//         for calories in elf_calories {
-//            if calories > max_calories[0] {
-//                max_calories[2] = max_calories[1];
-//                max_calories[1] = max_calories[0];
-//                max_calories[0] = calories;
-//            }
-//         }
-//         max_calories.into_iter().sum()
-     }
+    elf_calories.sort_by(|a, b| b.cmp(a)); // Sort by descending order
+    elf_calories.into_iter().take(3).sum()
 }

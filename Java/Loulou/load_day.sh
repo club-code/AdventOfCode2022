@@ -1,0 +1,1 @@
+curl https://adventofcode.com/2022/day/$1/input -H "Cookie:session=53616c7465645f5fdb4c55bab0bbbde91968a25af29f2812afa939fffb7e38bcd45af8fbbb8160f97671e5a6bfd584fcc5df660e4fd876ef66021f0a9baad8ff" --output inputs.txt

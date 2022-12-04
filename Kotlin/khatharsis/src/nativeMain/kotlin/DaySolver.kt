@@ -17,7 +17,7 @@ open class DaySolver(val day: Int, val name: String) {
         println("   Time taken: $time")
     }
     val data: List<String> = run {
-        val command = "curl https://adventofcode.com/2022/day/$day/input " +
+        val command = "curl -s https://adventofcode.com/2022/day/$day/input " +
                 "-H \"Cookie:session=$cookie\""
         val fp = popen(command, "r")
 
@@ -33,7 +33,7 @@ open class DaySolver(val day: Int, val name: String) {
         if (status != 0) {
             error("Failed to get input from server: status $status")
         }
-        stdout.split('\n')
+        stdout.split('\n').dropLast(1)
     }
 }
 

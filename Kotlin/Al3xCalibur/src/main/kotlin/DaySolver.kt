@@ -5,6 +5,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
@@ -24,9 +25,21 @@ open class DaySolver(val day: Int, val name: String) {
         println("   Time taken: $time")
     }
 
-    val data: String = runBlocking {
-        val response = client.get("https://adventofcode.com/2022/day/$day/input")
-        response.bodyAsText().trimEnd()
+    open val exampleInput: String = ""
+
+    val input: String = runBlocking {
+        val f = File("inputs/$day")
+        if (f.exists()) {
+            f.readText()
+        } else {
+            val response = client.get("https://adventofcode.com/2022/day/$day/input") {
+                header("User-Agent", "alexandre.conte11@gmail.com")
+            }
+            val content = response.bodyAsText().trimEnd()
+            f.parentFile.mkdir()
+            f.writeText(content)
+            content
+        }
     }
 
     companion object {

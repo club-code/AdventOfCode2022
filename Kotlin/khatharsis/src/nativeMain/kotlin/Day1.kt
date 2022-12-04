@@ -9,13 +9,3 @@ class Day1 : DaySolver(1, "Calorie Counting") {
         return newData.sortedDescending().take(3).sum().toString()
     }
 }
-
-fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf<String>())) { acc, it ->
-    if (it.isBlank()) {
-        acc.add(mutableListOf<String>())
-        return@fold acc
-    } else {
-        acc.last().add(it)
-        return@fold acc
-    }
-}

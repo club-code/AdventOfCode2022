@@ -8,7 +8,6 @@ To run the program for day 1 :
 
 ## Code
 I made a trait `Solver` to simplify the parsing and running phase
-And I am using the [anyhow](https://github.com/dtolnay/anyhow) crate to have simlple `Result`
 
 ### *Example*
 
