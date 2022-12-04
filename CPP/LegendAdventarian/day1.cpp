@@ -3,7 +3,7 @@
 #include <string>  //i need to include strings?
 #include <iostream> //for cout
 using namespace std; //very useful
-ifstream infile("input.txt");
+ifstream infile("ressource/input.txt");
 
 int part1(){
     string line;
@@ -29,7 +29,7 @@ int part1(){
 }
 
 int part2(){
-    ifstream infile("input.txt");
+    ifstream infile("ressource/input.txt");
     string line;
     int a;
     int ctr=0;
