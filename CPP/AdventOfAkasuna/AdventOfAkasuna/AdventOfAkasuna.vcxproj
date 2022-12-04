@@ -128,6 +128,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdventOfAkasuna.cpp" />
+    <ClCompile Include="day01.cpp" />
+    <ClCompile Include="day03.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AdventOfAkasuna.h" />
+    <ClInclude Include="day01.h" />
+    <ClInclude Include="day03.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
