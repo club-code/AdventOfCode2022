@@ -7,6 +7,7 @@ The solutions of the Advent of Code 2022 made by the members of the Club Code, T
 * Akasuna
 * GCx
 * Legendarian
+* NiqueCPP
 
 ### C#
 * Guitou
