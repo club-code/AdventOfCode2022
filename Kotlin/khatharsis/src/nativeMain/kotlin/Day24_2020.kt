@@ -1,27 +1,4 @@
 class Day24_2020 : DaySolver(24, "Lobby Layout", 2020) {
-
-    private val exampleData = """sesenwnenenewseeswwswswwnenewsewsw
-        neeenesenwnwwswnenewnwwsewnenwseswesw
-        seswneswswsenwwnwse
-        nwnwneseeswswnenewneswwnewseswneseene
-        swweswneswnenwsewnwneneseenw
-        eesenwseswswnenwswnwnwsewwnwsene
-        sewnenenenesenwsewnenwwwse
-        wenwwweseeeweswwwnwwe
-        wsweesenenewnwwnwsenewsenwwsesesenwne
-        neeswseenwwswnwswswnw
-        nenwswwsewswnenenewsenwsenwnesesenew
-        enewnwewneswsewnwswenweswnenwsenwsw
-        sweneswneswneneenwnewenewwneswswnese
-        swwesenesewenwneswnwwneseswwne
-        enesenwswwswneneswsenwnewswseenwsese
-        wnwnesenesenenwwnenwsewesewsesesew
-        nenewswnwewswnenesenwnesewesw
-        eneswnwswnwsenenwnwnwwseeswneewsenese
-        neswnwewnwnwseenwseesewsenwsweewe
-        wseweeenwnesenwwwswnew"""
-        .trim().split("\n")
-
     private val regex = Regex("se|sw|nw|ne|e|w")
     private val newData = data.map { s ->
         regex.findAll(s).map { it.value }.map {
