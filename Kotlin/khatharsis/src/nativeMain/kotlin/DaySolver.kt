@@ -3,21 +3,21 @@ import platform.posix.*
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
-open class DaySolver(val day: Int, val name: String) {
+open class DaySolver(val day: Int, val name: String, val year: Int = 2022) {
     open fun firstPart(): String = "First part isn't done yet."
     open fun secondPart(): String = "Second part isn't done yet."
 
     @OptIn(ExperimentalTime::class)
     fun solve() {
         val time = measureTime {
-            println("Solving for day $day: $name")
+            println("Solving for day $day of $year: $name")
             println("   Part 1: ${firstPart()}")
             println("   Part 2: ${secondPart()}")
         }
         println("   Time taken: $time")
     }
     val data: List<String> = run {
-        val command = "curl -s https://adventofcode.com/2022/day/$day/input " +
+        val command = "curl -s https://adventofcode.com/$year/day/$day/input " +
                 "-H \"Cookie:session=$cookie\""
         val fp = popen(command, "r")
 

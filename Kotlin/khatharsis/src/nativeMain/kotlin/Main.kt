@@ -4,4 +4,5 @@ fun main() {
     Day2().solve()
     Day2Alternative().solve()
     Day3().solve()
+//    Day24_2020().solve()
 }
