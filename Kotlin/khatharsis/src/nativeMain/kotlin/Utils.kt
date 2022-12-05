@@ -7,3 +7,10 @@ fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf
         return@fold acc
     }
 }
+
+fun<E> List<List<E>>.rotate(): List<List<E>> =
+    (0 until this[0].size).map {i->
+        (this.indices).map { j->
+            this[j][i]
+        }
+    }
