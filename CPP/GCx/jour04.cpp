@@ -36,14 +36,9 @@ int jour04partie2(std::vector<std::string> lines){
     for (auto l : lines){
         std::string s1 = l.substr(0, l.find(','));
         std::string s2 = l.substr(l.find(',')+1, std::string::npos);
-        // std::cout << Range(s1)<<" & "<<Range(s2)<<std::endl;
         if (do_overlap(Range(s1), Range(s2))){
-            // std::cout << "Don't overlap : ";
             count++;
-        } //else {
-        //     std::cout << "Do overlap : ";
-        // }
-        // std::cout << l<<std::endl;
+        }
     }
     return count;
 }
