@@ -3,14 +3,12 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-int jour06(std::string line, int message_length){
+int jour06partie1(std::string line){
     std::unordered_map<char, int> content;
     for (int i = 0; i < 4; i++){
         content[line[i]]++;
     }
-    if (content[line[0]]+content[line[1]]+content[line[2]]+content[line[3]]==message_length){
-        return 4;
-    }
+    if (content[line[0]]+content[line[1]]+content[line[2]]+content[line[3]]!=4)
     for (size_t j = 4; j < line.length(); j++ ){
         content[line[j-4]]--;
         content[line[j]]++;
@@ -35,7 +33,7 @@ int main (int argc, char** argv){
         auto lines = readFile(path);
         if (std::strcmp(argv[1], "1")==0){
             for (auto l : lines){
-                int res = jour06(l);
+                int res = jour06partie1(l);
                 std::cout << l << std::endl;
                 std::cout << "Res = "<< res<<std::endl <<std::endl;
             } 
