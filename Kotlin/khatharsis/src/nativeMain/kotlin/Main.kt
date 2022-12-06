@@ -7,4 +7,5 @@ fun main() {
 //    Day24_2020().solve()
     Day4().solve()
     Day5().solve()
+    Day6().solve()
 }
