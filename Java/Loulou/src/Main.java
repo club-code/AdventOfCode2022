@@ -5,6 +5,6 @@ import java.util.Vector;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        new Day5().hard();
+        new Day6().hard();
     }
 }

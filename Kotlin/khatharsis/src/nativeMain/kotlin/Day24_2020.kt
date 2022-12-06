@@ -27,6 +27,9 @@ class Day24_2020 : DaySolver(24, "Lobby Layout", 2020) {
     // The starting Hexagon
 
     data class Hexagon(val q: Int, val r: Int, val s: Int, var color: Boolean = true) {
+        fun getNeighbour(direction: Direction,
+                         hexagonMap: Map<Triple<Int, Int, Int>, Hexagon>
+        ): Hexagon? = hexagonMap[Triple(q + direction.q, r + direction.r, s + direction.s)]
         fun getNeighbourOrCreate(
             direction: Direction,
             hexagonMap: MutableMap<Triple<Int, Int, Int>, Hexagon>
@@ -41,9 +44,9 @@ class Day24_2020 : DaySolver(24, "Lobby Layout", 2020) {
             }
             return hexagonMap[key]!!
         }
-        fun listNeighbours(hexagonMap: MutableMap<Triple<Int, Int, Int>, Hexagon>) = Direction.values().mapNotNull { direction ->
-            hexagonMap[Triple(q + direction.q, r + direction.r, s + direction.s)]
-        }
+        fun listNeighbours(hexagonMap: Map<Triple<Int, Int, Int>, Hexagon>) = Direction.values().map { direction -> getNeighbour(direction, hexagonMap) }
+
+        fun countBlackNeighbours(hexagonMap: Map<Triple<Int, Int, Int>, Hexagon>) = listNeighbours(hexagonMap).count {it!=null && !it.color}
     }
 
     override fun firstPart(): String {
@@ -76,7 +79,7 @@ class Day24_2020 : DaySolver(24, "Lobby Layout", 2020) {
 
             // Alternate the buffermap
             bufferMap.forEach { (_, value) ->
-                val numBlackNeighbours = value.listNeighbours(dayHexagonMap).count { !it.color }
+                val numBlackNeighbours = value.countBlackNeighbours(dayHexagonMap)
                 // If tile is black (Nested if for protection)
                 if (!value.color) {
                     if (numBlackNeighbours == 0 || numBlackNeighbours > 2) {
@@ -94,4 +97,56 @@ class Day24_2020 : DaySolver(24, "Lobby Layout", 2020) {
         }
         return dayHexagonMap.count {!it.value.color}.toString()
     }
+    // This is a tentative to optimize the code
+    // It doesn't work
+//    override fun firstPart(): String {
+//        newData.forEach { directions ->
+//            var curHexagon = hexagonMap[Triple(0, 0, 0)]!!
+//            directions.forEach { direction ->
+//                curHexagon = curHexagon.getNeighbourOrCreate(direction, hexagonMap)
+//            }
+//            curHexagon.color = !curHexagon.color
+//        }
+//        return hexagonMap.count { !it.value.color }.toString()
+//    }
+//
+//    override fun secondPart(): String {
+//        val numberOfDays = 100
+//        var dayHexagonMap = hexagonMap.filter {!it.value.color}.toMutableMap()
+//        (1..numberOfDays).forEach { day ->
+//            // Add the neighbours to the map
+//            // This is a buffer to store the neighbours
+//            val buffer = mutableMapOf<Triple<Int, Int, Int>, Hexagon>()
+//
+//            // We're only interested in the neighbours of the black tiles
+//            dayHexagonMap.filterValues { !it.color }.forEach {(key, hexagon) ->
+//                hexagon.listNeighbours(dayHexagonMap).forEachIndexed { directionIndex, neighbour ->
+//                    // We add all the not found neighbours to the buffer
+//                    if (neighbour==null) {
+//                        hexagon.getNeighbourOrCreate(Direction.values()[directionIndex], buffer)
+//                    }
+//                }
+//            }
+//            dayHexagonMap.putAll(buffer)
+//
+//            val hexagonToNeighbours = dayHexagonMap.mapValues { it.value.countBlackNeighbours(dayHexagonMap) }
+//            dayHexagonMap.forEach {(key, value) ->
+//                val numBlackNeighbours = hexagonToNeighbours[key]!!
+//                // If tile is black
+//                if (!value.color) {
+//                    if (numBlackNeighbours == 0 || numBlackNeighbours > 2) {
+//                        value.color = true
+//                    }
+//                }
+//                // If tile is white
+//                else if (value.color && numBlackNeighbours == 2) {
+//                    value.color = false
+//                }
+//            }
+//
+//            // And remove the white ones
+//            dayHexagonMap = dayHexagonMap.filterValues { !it.color }.toMutableMap()
+//        }
+//        return dayHexagonMap.count {!it.value.color}.toString()
+//    }
 }
