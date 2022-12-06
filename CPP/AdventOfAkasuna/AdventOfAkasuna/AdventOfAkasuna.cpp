@@ -1,17 +1,18 @@
 #include <iostream>
-#include <vector>
 #include <sstream>
 #include <string>
 #include <stdio.h>
 #include <algorithm> 
 #include <numeric>
+#include "AdventOfAkasuna.h"
+#include "day05.h"
 
 using namespace std; 
 
 const char* const cookie = "53616c7465645f5feef6b0564a27cd44690075eafbb271c054ae54586a63c973f24c1e8c1204d50379fd60ab3d8afc9aed55477f101ddc6a219d8dccc856423c";
 
 
-std::vector<std::string> GetDayInput(char day) {
+std::vector<std::string> AdventOfCode::GetDayInput(char day) {
 	FILE* fp;
 	std::stringstream ss;
 	ss << "curl https://adventofcode.com/2022/day/";
@@ -39,48 +40,8 @@ std::vector<std::string> GetDayInput(char day) {
 	return resultVector;
 }
 
-void DayOneOne() { 
-	std::vector<std::string> input = GetDayInput('1');
-	int sum = 0;
-	int max = 0;
-	for (int i = 0; i < input.size(); i++) {
-		if (input[i].empty()) {
-			max = (sum >= max) ? sum : max;
-			sum = 0;
-		}
-		else {
-			sum += stoi(input[i]);
-		}
-	}
-	cout << max;
-}
+int main() {
+	day05::part2();
 
-void DayOneTwo() {
-	std::vector<std::string> input = GetDayInput('1');
-	std::vector<int> max{0,0,0};
-	int sum = 0;
-	for (int i = 0; i < input.size(); i++) {
-		if (input[i].empty()) {
-			for (int j = 0; j < max.size(); j++) {
-				if (sum >= max[j]) {
-					max[j]=sum;
-					break;
-				}
-			}
-			sort(max.begin(), max.end());
-			sum = 0;
-		}
-		else {
-			sum += stoi(input[i]);
-		}
-	}
-	cout << accumulate(max.begin(), max.end(),0);
-}
-
-
-int main()
-{
-	DayOneTwo();
-	return 0;
 }
 
