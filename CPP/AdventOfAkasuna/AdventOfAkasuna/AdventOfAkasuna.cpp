@@ -5,7 +5,7 @@
 #include <algorithm> 
 #include <numeric>
 #include "AdventOfAkasuna.h"
-#include "day03.h"
+#include "day05.h"
 
 using namespace std; 
 
@@ -41,7 +41,7 @@ std::vector<std::string> AdventOfCode::GetDayInput(char day) {
 }
 
 int main() {
-	day03::part2();
+	day05::part2();
 
 }
 
