@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stack>
 #include <queue>
+
 std::vector<std::stack<char>> get_stacks(std::vector<std::string> lines, int delimitation){
     size_t it = 1;
     std::vector<std::stack<char>> stacks;

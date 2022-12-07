@@ -19,6 +19,8 @@ kotlin {
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
+    val platform = "linuxx64"
+
     nativeTarget.apply {
         binaries {
             executable {
@@ -27,6 +29,11 @@ kotlin {
         }
     }
     sourceSets {
-        val nativeMain by getting
+        val nativeMain by getting {
+            dependencies {
+                // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-linuxx64
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-$platform:1.6.4")
+            }
+        }
     }
 }

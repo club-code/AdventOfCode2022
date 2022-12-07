@@ -47,10 +47,52 @@ int part1(){
     return ctr;
 }
 
+int part2(){
+    ifstream infile("ressource/day3.txt");
+    string line;
+    string pack;
+    string bag1;
+    string bag2;
+    string bag3;
+    int size;
+    int ctr=0;
+    int teamctr=0;
+    string team[]={"","",""};
+    while (getline(infile, line))
+    { 
+        istringstream iss(line);
+        iss >> pack;
+        team[teamctr]=pack;
+        teamctr+=1;
+        if(teamctr==3){
+            teamctr=0;
+            for(int i = 0 ; i < team[0].length() ; i++){
+                for(int j=0; j<team[1].length();j++){
+                    if(team[0][i]==team[1][j]){
+                        //found a match, check the last one
+                        for(int k=0;k<team[2].length();k++){
+                            if(team[0][i]==team[2][k]){
+                                ctr+=priority(team[0][i]);
+                                goto end2;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+    end2:
+        continue;
+    }
+    return ctr;
+}
+
 int main()
 {
     int res = part1();
     cout << "The priority level is : " << res << "\n";
-    //part2(); 3by3
+    int res2 = part2();
+    cout << "The priority level for badges is : " << res2 << "\n";
+    infile.close();
     return 0;
 }
