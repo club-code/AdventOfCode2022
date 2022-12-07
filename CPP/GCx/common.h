@@ -14,7 +14,7 @@ std::vector<std::string> readFile(std::string path){
     std::string line;
     std::vector<std::string> res;
     while (std::getline(inputFile, line)){
-        res.push_back(line);
+        res.push_back(line.substr(0, line.size()-1));
     }
     return res;
 }
