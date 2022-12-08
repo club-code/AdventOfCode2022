@@ -1,4 +1,4 @@
-#include "common.hpp"
+#include "common/common.hpp"
 
 struct day01 {
     std::vector<int> calories;

@@ -1,4 +1,4 @@
-#include "common.hpp"
+#include "common/common.hpp"
 
 #define NB_STACKS 9
 

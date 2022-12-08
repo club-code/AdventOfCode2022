@@ -1,4 +1,4 @@
-#include "common.hpp"
+#include "common/common.hpp"
 
 using range = std::pair<int,int>;
 
