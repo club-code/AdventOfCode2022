@@ -15,6 +15,7 @@
 #include <numeric>
 #include <cmath>
 #include <tgmath.h>
+#include <ranges>
 
 #include <cstdint>
 #include <string>
