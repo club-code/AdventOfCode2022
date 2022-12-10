@@ -1,4 +1,4 @@
-#include "common.hpp"
+#include "common/common.hpp"
 
 struct day03 {
     std::vector<std::string> input;
