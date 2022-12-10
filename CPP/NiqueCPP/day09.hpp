@@ -12,6 +12,9 @@ std::unordered_map<char, std::function<point(point&)>> moves {
 struct day09 {
     std::deque<char> instructions;
 
+    template <size_t n>
+    int run();
+
     day09();
 
     int part_one();

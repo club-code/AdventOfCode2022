@@ -14,43 +14,38 @@ inline int normalize(int i) {
 
 point moveTail(point& head, point& tail) {
     point vec(head.first - tail.first, head.second - tail.second);
-    if (std::abs(vec.first) < 2 && std::abs(vec.second) < 2) {
+    if (std::abs(vec.first) < 2 && std::abs(vec.second) < 2) 
         return tail;
-    } else {
-        return point(tail.first + normalize(vec.first), 
-                     tail.second + normalize(vec.second));
-    }
+    else return point(tail.first + normalize(vec.first), 
+                      tail.second + normalize(vec.second));
 }
 
 point moveHead(point& head, char instruction) {
     return moves[instruction](head);
 }
 
-int day09::part_one() {
+template <size_t n>
+int day09::run() {
     point head(0,0);
-    point tail(0,0);
-    std::unordered_set<point, hashes::PairHash<int,int>> visited;
-    for (const auto instruction : instructions) {
-        head = moveHead(head, instruction);
-        tail = moveTail(head, tail);
-        visited.insert(tail);
-    } 
-    return visited.size();
-}
-
-int day09::part_two() {
-    point head(0,0);
-    std::array<point, 9> tails;
+    std::array<point, n> tails;
     std::fill(tails.begin(), tails.end(), point(0,0));
     std::unordered_set<point, hashes::PairHash<int,int>> visited;
     for (const auto instruction : instructions) {
         head = moveHead(head, instruction);
         tails.front() = moveTail(head, tails[0]);
-        for (size_t i = 0; i < tails.size() - 1; ++i)
+        for (size_t i = 0; i < n - 1; ++i)
             tails[i+1] = moveTail(tails[i], tails[i+1]);
         visited.insert(tails.back());
     }
-    return visited.size();
+    return visited.size(); 
+}
+
+int day09::part_one() {
+    return run<1>();
+}
+
+int day09::part_two() {
+    return run<9>();
 }
 
 int main(int argc, char** argv) {
