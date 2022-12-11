@@ -1,4 +1,6 @@
 #pragma once
+#include "AdventOfAkasuna.h"
+
 class day07
 {
 public:

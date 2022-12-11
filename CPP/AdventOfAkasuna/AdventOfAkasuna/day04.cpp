@@ -1,10 +1,5 @@
 #include "day04.h"
-#include <iostream>
-#include <string>
-#include <algorithm> 
-#include <numeric>
-#include <vector>
-#include "AdventOfAkasuna.h"
+
 
 void day04::part1()
 {

@@ -1,12 +1,4 @@
 #include "day07.h"
-#include <iostream>
-#include <string>
-#include <algorithm> 
-#include <numeric>
-#include <vector>
-#include "AdventOfAkasuna.h"
-#include <stack>
-
 
 struct Node {
 	std::string name;

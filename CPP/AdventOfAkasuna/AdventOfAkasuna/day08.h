@@ -1,10 +1,11 @@
 #pragma once
 #include "AdventOfAkasuna.h"
 
-class day03
+class day08
 {
 public:
 	static void part1();
 	static void part2();
+
 };
 

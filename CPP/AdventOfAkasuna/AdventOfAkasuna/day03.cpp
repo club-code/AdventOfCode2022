@@ -1,10 +1,5 @@
 #include "day03.h"
-#include <iostream>
-#include <string>
-#include <algorithm> 
-#include <numeric>
-#include <vector>
-#include "AdventOfAkasuna.h"
+
 
 inline int convertToPriority(char c) {
 	if (c == toupper(c)) { return c - 'A' + 27; }
