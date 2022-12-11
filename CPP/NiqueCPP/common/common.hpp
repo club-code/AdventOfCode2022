@@ -79,10 +79,11 @@ std::vector<std::string> split_string(std::string s, std::string delim) {
 }
 
 template <typename T>
-std::vector<T> split_string(std::string s, std::string delim, std::function<T(std::string)> func) {
-    std::vector<T> parsed_vector {};
+std::vector<T> split_string(const std::string& s, const std::string& delim, std::function<T(std::string)> func) {
+    std::vector<T> parsed_vector;
     auto start = 0U;
     auto end = s.find(delim);
+    std::cout << end << "\n";
     while (end != std::string::npos)
     {
         parsed_vector.push_back(func(s.substr(start, end - start)));
@@ -93,8 +94,48 @@ std::vector<T> split_string(std::string s, std::string delim, std::function<T(st
     return parsed_vector;
 }
 
+template <typename T, typename F>
+std::vector<T> stringToVector(const std::string& s, F f) {
+    std::vector<T> parsed_vector;
+    for (const auto& c : s) 
+        parsed_vector.push_back(f(c));
+    return parsed_vector;
+}
+
 template <typename T, typename S>
 std::ostream& operator<<(std::ostream& os, const std::pair<T,S> p) {
     os << "Pair<" << p.first << ", " << p.second << ">";
     return os;
 }
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T> v) {
+    os << "Vector{";
+    for (auto&& it = v.begin(); it != v.end()-1; ++it) os << *it << ", ";
+    os << v.back() << "}";
+    return os;
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const std::deque<T> v) {
+    os << "Vector{";
+    for (auto&& it = v.begin(); it != v.end()-1; ++it) os << *it << ", ";
+    os << v.back() << "}";
+    return os;
+}
+
+namespace hashes {
+    template <typename T, typename U>
+    struct PairHash {
+        size_t operator()(const std::pair<T,U>& p) const {
+            return std::hash<T>()(p.first) ^ std::hash<U>()(p.second); 
+        }
+    };
+
+    template <typename T, typename U>
+    struct UserPairHash {
+        size_t operator()(const std::pair<T, U> p) const {
+            return (p.first)() ^ (p.first)();
+        }
+    };
+};
