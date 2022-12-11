@@ -1,4 +1,3 @@
-import java.lang.StringBuilder
 import java.util.*
 
 class Day11 : DaySolver(11, "Monkey in the Middle") {
@@ -86,10 +85,7 @@ data class Monkey(val n: Int, val startingItems: LinkedList<Long>, val operation
 
 data class Operation(val left: Expression, val op: Op, val right: Expression) {
     fun compute(old: Long): Long {
-        return when (op) {
-            Op.PLUS -> left.new(old) + right.new(old)
-            Op.TIMES -> left.new(old) * right.new(old)
-        }
+        return op.op(left.new(old), right.new(old))
     }
 }
 
@@ -101,7 +97,7 @@ data class Test(val divisible: Long, val ifTrue: Int, val ifFalse: Int) {
 }
 
 enum class Op(val op: (Long, Long) -> Long) {
-    TIMES({ a, b -> a + b }), PLUS({ a, b -> a * b });
+    TIMES({ a, b -> a * b }), PLUS({ a, b -> a + b });
 }
 
 sealed interface Expression {
@@ -131,7 +127,7 @@ fun String.toMonkey(): Monkey {
     val n = monkeyNumberRegex.matchEntire(lines[0])!!.groupValues[1].toInt()
     val items = LinkedList(monkeyItemsRegex.matchEntire(lines[1])!!.groupValues[1].split(", ").map { it.toLong() })
 
-    val (_, left, op, right) = operationRegex.matchEntire(lines[2])!!.groupValues;
+    val (_, left, op, right) = operationRegex.matchEntire(lines[2])!!.groupValues
     val operation = Operation(left.toExpression(), op.toOp(), right.toExpression())
 
     val divisible = divisibleRegex.matchEntire(lines[3])!!.groupValues[1].toLong()
