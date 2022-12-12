@@ -1,5 +1,3 @@
-package Day7;
-
 import java.util.Vector;
 
 class Tree {

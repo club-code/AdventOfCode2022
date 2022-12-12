@@ -1,11 +1,5 @@
 #include "day05.h"
-#include <iostream>
-#include <string>
-#include <algorithm> 
-#include <numeric>
-#include <vector>
-#include "AdventOfAkasuna.h"
-#include <stack>
+
 
 
 inline std::pair<std::vector<std::stack<char>>,int> ParseInput(std::vector<std::string> input) {

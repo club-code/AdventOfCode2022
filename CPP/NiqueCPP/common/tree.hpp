@@ -6,7 +6,7 @@
 
 template <typename T>
 struct Node {
-    std::vector<Node<T>*> children;
+    std::vector<std::unique_ptr<Node<T>>> children;
     std::optional<T> val;
     Node<T>* parent;
     std::optional<std::string> name;

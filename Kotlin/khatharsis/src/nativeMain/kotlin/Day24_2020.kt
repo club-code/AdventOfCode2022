@@ -63,7 +63,7 @@ class Day24_2020 : DaySolver(24, "Lobby Layout", 2020) {
     override fun secondPart(): String {
         val numberOfDays = 100
         var dayHexagonMap = hexagonMap
-        (1..numberOfDays).forEach { day ->
+        (1..numberOfDays).forEach { _ ->
             // Copy the dayHexagonMap, but only the black ones
             // since they're the only one (and their neighbours) that can change
             val bufferMap = mutableMapOf<Triple<Int, Int, Int>, Hexagon>()

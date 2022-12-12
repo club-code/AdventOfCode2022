@@ -2,6 +2,6 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        new Day8().hard();
+        new Day9().hard();
     }
 }
