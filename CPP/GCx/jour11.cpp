@@ -20,7 +20,7 @@ std::unordered_map<int, Monkey> parseInput(std::vector<std::string> lines){
     return monkeys;
 } 
 
-void Monkey::throw_item(int worry_level, std::unordered_map<int, Monkey>& monkeys){
+void Monkey::throw_item(unsigned long worry_level, std::unordered_map<int, Monkey>& monkeys){
     if (worry_level%divisibility_criteria == 0){
         std::cout << " divisible by "<<divisibility_criteria<<" : thrown to "<<monkey_true <<std::endl;
         monkeys[monkey_true].items.push_back(worry_level);
@@ -33,7 +33,7 @@ void Monkey::throw_item(int worry_level, std::unordered_map<int, Monkey>& monkey
 Monkey::Monkey(std::vector<std::string> vec, int first){
     size_t begin = vec[first+1].find(": ")+2;
 
-    items = std::deque<int>();
+    items = std::deque<unsigned long>();
     while (begin < vec[first+1].size()-1){
         // std::cout << "{"<<vec[first+1].substr(begin, vec[first+1].substr(begin, std::string::npos).find(", "))<<"}";
         items.push_back(std::stoi(vec[first+1].substr(begin, vec[first+1].substr(begin, std::string::npos).find(", ")))); 
@@ -41,20 +41,20 @@ Monkey::Monkey(std::vector<std::string> vec, int first){
     }
 
     char op_char = vec[first+2][vec[first+2].find("new = old ")+10];
-    std::function<int(int, int)> op; 
+    std::function<unsigned long(unsigned long, unsigned long)> op; 
     if (op_char=='+'){
-        op = std::plus<int>();
+        op = std::plus<unsigned long>();
     } else if (op_char=='*'){
-        op = std::multiplies<int>();
+        op = std::multiplies<unsigned long>();
     }
 
     std::string second_arg = vec[first+2].substr(vec[first+2].find("new = old ")+12, std::string::npos);
 
     if (second_arg=="old"){
-        this->function = [op](int i){ return op(i, i);};
+        this->function = [op](unsigned long i){ return op(i, i);};
     } else {
-        int arg = std::stoi(second_arg);
-        this->function = [op, arg](int i){ return op(i, arg);};
+        unsigned long arg = std::stoi(second_arg);
+        this->function = [op, arg](unsigned long i){ return op(i, arg);};
     }
 
     // std::cout <<"old"<< op_char <<second_arg<< "->"<< function(5)<<std::endl;  
@@ -70,14 +70,15 @@ Monkey::Monkey(std::vector<std::string> vec, int first){
 Monkey::Monkey(){};
 
 void Monkey::turn(std::unordered_map<int, Monkey>& monkeys){
-    int current_item;
+    unsigned long current_item;
     while(!items.empty()){
         monkey_business++;
         current_item = items.front();
         std::cout << "starting worry : "<<current_item;
         items.pop_front();
         current_item = function(current_item);
-        current_item /= 3;
+        // current_item /= 3;
+        current_item %= 2*3*5*7*11*13*17*19;
         std::cout << " becomes "<<current_item;
         throw_item(current_item, monkeys);
     }
@@ -90,12 +91,12 @@ void round(std::unordered_map<int, Monkey>& monkeys){
 }
 
 void jour11partie01(std::unordered_map<int, Monkey> monkeys){
-    for (int i = 1; i < 21; i++){
+    for (int i = 1; i <= 10000; i++){
         std::cout << "Round "<<i<<std::endl;
         round(monkeys);
     }
-    std::vector<int> res;
-    int max1{0}, max2{0};
+    std::vector<unsigned long> res;
+    unsigned long max1{0}, max2{0};
     for (int i = 0; i < monkeys.size(); i++){
         std::cout << "Monkey "<<i<<" : "<<monkeys[i].monkey_business<<std::endl;
         res.push_back(monkeys[i].monkey_business);
