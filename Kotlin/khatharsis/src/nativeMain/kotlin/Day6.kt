@@ -1,6 +1,6 @@
 class Day6 : DaySolver(6, "Tuning Trouble") {
     fun String.findFirstMarker(length: Int): Pair<Int, String> =
-        this.windowed(length).also { println(it) }
+        this.windowed(length)
             .let {
                 it.first { s -> s.all { c1 -> s.count { c2 -> c2 == c1 } == 1 } }
                     .let { marker -> it.indexOf(marker) + length to marker }
