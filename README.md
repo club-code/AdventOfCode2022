@@ -18,6 +18,7 @@ The solutions of the Advent of Code 2022 made by the members of the Club Code, T
 ### Kotlin
 * Al3xCalibur
 * Khatharsis
+* Ukabi
 
 ### Rust
 * mh4ckt3mh4ckt1c4s
