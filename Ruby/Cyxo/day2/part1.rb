@@ -1,0 +1,1 @@
+p $<.map(&:split).map{|h,m|((m.ord-h.ord-22)%3)*3+1+"XYZ".index(m)}.sum

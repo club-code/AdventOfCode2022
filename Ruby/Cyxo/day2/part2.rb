@@ -1,0 +1,1 @@
+p $<.map(&:split).map{|h,m|"XYZ".index(m)*3+1+("ABC".index(h)+"XYZ".index(m)-1)%3}.sum
