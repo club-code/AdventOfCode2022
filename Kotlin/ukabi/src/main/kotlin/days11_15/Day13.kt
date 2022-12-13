@@ -2,7 +2,7 @@ package days11_15
 
 import inputs.input13
 
-sealed class Value {
+sealed class Value : Comparable<Value> {
     abstract val data: Any
 
     class ValInt(override val data: Int) : Value() {
@@ -13,16 +13,15 @@ sealed class Value {
     }
 
     class ValList(override val data: List<Value>) : Value() {
-        override operator fun compareTo(other: ValInt): Int = this.compareTo(ValList(listOf(other)))
 
         override operator fun compareTo(other: ValList): Int =
             if (this.data.size < other.data.size) {
                 val o = ValList(other.data.subList(0, this.data.size))
-                if (this.compareTo(o) == 0) -1 else 1   // length condition
+                this.compareTo(o).let { if (it == 0) -1 else it }
 
             } else if (this.data.size > other.data.size) {
                 val f = ValList(this.data.subList(0, other.data.size))
-                if (f.compareTo(other) == 0) 1 else -1  // length condition
+                f.compareTo(other).let { if (it == 0) 1 else it }
 
             } else {
                 this.data.zip(other.data)
@@ -31,16 +30,16 @@ sealed class Value {
                     .firstOrNull() ?: 0
             }
 
+        override operator fun compareTo(other: ValInt): Int = this.compareTo(ValList(listOf(other)))
         override fun unfold(): List<Any> = this.data.map { it.unfold() }
-
         override fun toString(): String = this.data.joinToString(",", "[", "]") { it.toString() }
 
     }
 
-    fun compareTo(other: Value): Int = when (other) {
-            is ValInt -> this.compareTo(other)
-            is ValList -> this.compareTo(other)
-        }
+    override fun compareTo(other: Value): Int = when (other) {
+        is ValInt -> this.compareTo(other)
+        is ValList -> this.compareTo(other)
+    }
 
     abstract operator fun compareTo(other: ValList): Int
     abstract operator fun compareTo(other: ValInt): Int
@@ -103,21 +102,31 @@ class Tree(private val root: Tree?, private var values: MutableList<Any> = mutab
         }
     }
 }
-fun day13(input: String) =
+
+fun day13a(input: String) =
     input
         .split("\n\n")
         .map { block -> block.split("\n").let { it[0].parse() to it[1].parse() }}
         .mapIndexed {i, couple -> i to couple}
         .filter { it.second.first <= it.second.second }
-        .sumOf { it.first }
+        .sumOf { it.first + 1 }
 
-fun day13a(input: String) =
-    day13(input)
+fun day13b(input: String, key1: String, key2: String) =
+    input
+        .split("\n")
+        .filter { it.isNotEmpty() }
+        .map { it.parse() }
+        .let { values ->
+            val k1 = key1.parse()
+            val k2 = key2.parse()
 
-fun day13b(input: String) =
-    day13(input)
+            (values + listOf(k1, k2))
+                .sortedBy { it }
+                .let { it.indexOf(k1) to it.indexOf(k2) }
+        }
+        .let { (it.first + 1) * (it.second + 1) }
 
 fun main(args: Array<String>) {
     println(day13a(input13))
-    println(day13b(input13))
+    println(day13b(input13, "[[2]]", "[[6]]"))
 }
