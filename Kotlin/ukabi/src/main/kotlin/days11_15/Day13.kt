@@ -3,17 +3,19 @@ package days11_15
 import inputs.input13
 
 sealed class Value {
+    abstract val data: Any
 
-    class ValInt(val data: Int) : Value() {
-        override fun compareTo(other: ValInt): Int = if (this.data.compareTo(other.data) == 0) -1 else 1
-        override fun compareTo(other: ValList): Int = ValList(listOf(this)).compareTo(other)
-        fun unfold() = this.data
+    class ValInt(override val data: Int) : Value() {
+        override operator fun compareTo(other: ValInt): Int = this.data.compareTo(other.data)
+        override operator fun compareTo(other: ValList): Int = ValList(listOf(this)).compareTo(other)
+        override fun unfold() = this.data
+        override fun toString(): String = this.data.toString()
     }
 
-    class ValList(val data: List<Value>) : Value() {
-        override fun compareTo(other: ValInt): Int = this.compareTo(ValList(listOf(other)))
+    class ValList(override val data: List<Value>) : Value() {
+        override operator fun compareTo(other: ValInt): Int = this.compareTo(ValList(listOf(other)))
 
-        override fun compareTo(other: ValList): Int =
+        override operator fun compareTo(other: ValList): Int =
             if (this.data.size < other.data.size) {
                 val o = ValList(other.data.subList(0, this.data.size))
                 if (this.compareTo(o) == 0) -1 else 1   // length condition
@@ -29,30 +31,20 @@ sealed class Value {
                     .firstOrNull() ?: 0
             }
 
-        fun unfold(): List<Any> = this.data.map {
-            when (it) {
-                is ValInt -> it.unfold()
-                is ValList -> it.unfold()
-            }
-        }
+        override fun unfold(): List<Any> = this.data.map { it.unfold() }
+
+        override fun toString(): String = this.data.joinToString(",", "[", "]") { it.toString() }
+
     }
 
-    override fun toString(): String =
-        when (this) {
-            is ValInt -> this.data.toString()
-            is ValList -> this.data.joinToString(",", "[", "]") { it.toString() }
+    fun compareTo(other: Value): Int = when (other) {
+            is ValInt -> this.compareTo(other)
+            is ValList -> this.compareTo(other)
         }
 
-    fun compareTo(other: Value): Int =
-        when (this) {
-            is ValInt, is ValList -> when (other) {
-                is ValInt -> this.compareTo(other)
-                is ValList -> this.compareTo(other)
-            }
-        }
-
-    abstract fun compareTo(other: ValList): Int
-    abstract fun compareTo(other: ValInt): Int
+    abstract operator fun compareTo(other: ValList): Int
+    abstract operator fun compareTo(other: ValInt): Int
+    abstract fun unfold(): Any
 }
 
 fun String.parse(): Value.ValList = Tree.parse(this).unfold()
@@ -114,15 +106,10 @@ class Tree(private val root: Tree?, private var values: MutableList<Any> = mutab
 fun day13(input: String) =
     input
         .split("\n\n")
-        .map { block ->
-            block
-                .split("\n")
-                .let { it[0].parse() to it[1].parse() }
-                .let { it.first.compareTo(it.second) }
-        }
-        .let { result -> result.indices.zip(result) }
-        .filter { it.second == -1 }
-        .sumOf { it.first + 1 }
+        .map { block -> block.split("\n").let { it[0].parse() to it[1].parse() }}
+        .mapIndexed {i, couple -> i to couple}
+        .filter { it.second.first <= it.second.second }
+        .sumOf { it.first }
 
 fun day13a(input: String) =
     day13(input)
