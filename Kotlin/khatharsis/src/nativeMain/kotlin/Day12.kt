@@ -1,12 +1,5 @@
 class Day12 : DaySolver(12, "Hill Climbing Algorithm") {
-    private val newData = data.map { it.toCharArray() }
-    private fun Vector.getNeighbours() = listOf(
-        this.first + 1 to this.second,
-        this.first - 1 to this.second,
-        this.first to this.second + 1,
-        this.first to this.second - 1
-    ).filter { it.first >= 0 && it.second >= 0 && it.first < newData.size && it.second < newData[0].size }
-
+    private val newData = data.map { it.toCharArray().toMutableList() }
     private fun Vector.getValue(): Char {
         return newData[this.first][this.second]
     }
@@ -35,7 +28,7 @@ class Day12 : DaySolver(12, "Hill Climbing Algorithm") {
             val (curPosition, cost) = queue.minBy { it.value }
             queue.remove(curPosition)
             accessiblePoints[curPosition] = cost
-            curPosition.getNeighbours()
+            curPosition.getNeighbours(newData)
                 .filter { !accessiblePoints.contains(it) } // Pas encore visité
                 .filter { curPosition.getValue() - it.getValue() <= 1 } // Accessible
                 .filter { !queue.containsKey(it) || queue[it]!! > cost + 1 }
@@ -47,7 +40,7 @@ class Day12 : DaySolver(12, "Hill Climbing Algorithm") {
     }
 
     override fun secondPart() =
-        newData.mapIndexed { index: Int, chars: CharArray ->
+        newData.mapIndexed { index: Int, chars: List<Char> ->
             chars.mapIndexed { index2: Int, c: Char ->
                 (index to index2) to c
             }.filter { it.second == 'a' }.mapNotNull { accessiblePoints[it.first] }

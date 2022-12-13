@@ -1,7 +1,6 @@
 import kotlin.math.abs
 import kotlin.math.max
 
-typealias Vector = Pair<Int, Int>
 class Day9: DaySolver(9, "Rope Bridge") {
     private inline fun Vector.move(direction: Char) =
         when (direction) {
