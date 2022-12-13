@@ -1,3 +1,7 @@
+package d5
+
+import DaySolver
+
 class Day5 : DaySolver(5, "Supply Stacks") {
     override val exampleInput: String = """
             [D]    

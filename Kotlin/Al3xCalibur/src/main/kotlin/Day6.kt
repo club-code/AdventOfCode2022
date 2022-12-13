@@ -1,3 +1,7 @@
+package d6
+
+import DaySolver
+
 class Day6 : DaySolver(6, "Tuning Trouble") {
     override val exampleInput: String = """
         mjqjpqmgbljsphdztnvjfqwrcgsmlb
