@@ -2,39 +2,60 @@ package days11_15
 
 import inputs.input13
 
-fun String.parse(): List<Any> =
-    Tree.parse(this).unfold()
+sealed class Value {
 
-fun Pair<Any, Any>.compare(): Int =
-    when (this.first) {
-        is Int -> when (this.second) {
-            is Int -> (this.first as Int).compareTo(this.second as Int)
-            is List<*> -> Pair(listOf(this.first), this.second).compare()
-            else -> 0
-        }
-        is List<*> -> when (this.second) {
-            is Int -> Pair(this.first, listOf(this.second)).compare()
-            is List<*> -> {
-                val f = this.first as List<*>
-                val s = this.second as List<*>
+    class ValInt(val data: Int) : Value() {
+        override fun compareTo(other: ValInt): Int = if (this.data.compareTo(other.data) == 0) -1 else 1
+        override fun compareTo(other: ValList): Int = ValList(listOf(this)).compareTo(other)
+        fun unfold() = this.data
+    }
 
-                if (f.size < s.size) {
-                    if (Pair(f, s.subList(0, f.size)).compare() == 0) -1 else 1
-                } else if (f.size > s.size) {
-                    if (Pair(f.subList(0, s.size), s).compare() == 0) 1 else -1
-                } else {
-                    f.zip(s)
-                        .map { Pair(it.first!!, it.second!!).compare() }
-                        .dropWhile { it == 0 }
-                        .firstOrNull() ?: 0
-                }
+    class ValList(val data: List<Value>) : Value() {
+        override fun compareTo(other: ValInt): Int = this.compareTo(ValList(listOf(other)))
+
+        override fun compareTo(other: ValList): Int =
+            if (this.data.size < other.data.size) {
+                val o = ValList(other.data.subList(0, this.data.size))
+                if (this.compareTo(o) == 0) -1 else 1   // length condition
+
+            } else if (this.data.size > other.data.size) {
+                val f = ValList(this.data.subList(0, other.data.size))
+                if (f.compareTo(other) == 0) 1 else -1  // length condition
+
+            } else {
+                this.data.zip(other.data)
+                    .map { it.first.compareTo(it.second) }
+                    .dropWhile { it == 0 }
+                    .firstOrNull() ?: 0
             }
 
-            else -> 0
+        fun unfold(): List<Any> = this.data.map {
+            when (it) {
+                is ValInt -> it.unfold()
+                is ValList -> it.unfold()
+            }
+        }
+    }
+
+    override fun toString(): String =
+        when (this) {
+            is ValInt -> this.data.toString()
+            is ValList -> this.data.joinToString(",", "[", "]") { it.toString() }
         }
 
-        else -> 0
-    }
+    fun compareTo(other: Value): Int =
+        when (this) {
+            is ValInt, is ValList -> when (other) {
+                is ValInt -> this.compareTo(other)
+                is ValList -> this.compareTo(other)
+            }
+        }
+
+    abstract fun compareTo(other: ValList): Int
+    abstract fun compareTo(other: ValInt): Int
+}
+
+fun String.parse(): Value.ValList = Tree.parse(this).unfold()
 
 class Tree(private val root: Tree?, private var values: MutableList<Any> = mutableListOf()) {
 
@@ -42,14 +63,15 @@ class Tree(private val root: Tree?, private var values: MutableList<Any> = mutab
 
     fun addValue(value: String) { this.values.add(value.toInt()) }
 
-    fun unfold(): List<Any> =
+    fun unfold(): Value.ValList = Value.ValList(
         this.values.map {
             when (it) {
                 is Tree -> it.unfold()
-                is Int -> it
+                is Int -> Value.ValInt(it)
                 else -> throw Error()
             }
         }
+    )
 
     override fun toString(): String =
         this.values.joinToString(",", "[", "]") {
@@ -96,7 +118,7 @@ fun day13(input: String) =
             block
                 .split("\n")
                 .let { it[0].parse() to it[1].parse() }
-                .compare()
+                .let { it.first.compareTo(it.second) }
         }
         .let { result -> result.indices.zip(result) }
         .filter { it.second == -1 }
