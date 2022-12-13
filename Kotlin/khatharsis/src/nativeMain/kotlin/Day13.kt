@@ -19,55 +19,49 @@ class Day13 : DaySolver(13, "Distress Signal") {
     }
 
 
-    sealed class Packet : Comparable<Packet> {
-        override operator fun compareTo(other: Packet): Int {
-            return when (this) {
-                is DataInteger -> {
-                    when (other) {
-                        is DataInteger -> this.value.compareTo(other.value)
-                        is DataList -> DataList(listOf(this)).compareTo(other)
-                    }
-                }
+    sealed interface Packet : Comparable<Packet>
 
+    class DataInteger(val value: Int) : Packet {
+        override fun compareTo(other: Packet) = when (other) {
+            is DataInteger -> this.value.compareTo(other.value)
+            is DataList -> DataList(listOf(this)).compareTo(other)
+        }
+
+        override fun toString() = value.toString()
+    }
+
+    class DataList(val list: List<Packet>) : Packet {
+        override fun compareTo(other: Packet): Int {
+            return when (other) {
+                is DataInteger -> this.compareTo(DataList(kotlin.collections.listOf(other)))
                 is DataList -> {
-                    when (other) {
-                        is DataInteger -> this.compareTo(DataList(listOf(other)))
-                        is DataList -> {
-                            if (other.list.size == this.list.size && this.list.zip(other.list)
-                                    .all { it.first.compareTo(it.second) == 0 }
-                            )
-                                return 0
-                            if (other.list.size > this.list.size) {
-                                // This will run out first
-                                for (i in this.list.indices) {
-                                    val temp = this.list[i].compareTo(other.list[i])
-                                    if (temp != 0) return temp
-                                }
-                                // All indices are equal so far
-                                // The smallest is thus the shortest
-                                return -1
-                            } else {
-                                // Other will run out first
-                                for (i in other.list.indices) {
-                                    val temp = this.list[i].compareTo(other.list[i])
-                                    if (temp != 0) return temp
-                                }
-                                // All indices are equal so far
-                                // The smallest is thus the shortest
-                                return 1
-                            }
+                    if (other.list.size == this.list.size && this.list.zip(other.list)
+                            .all { it.first.compareTo(it.second) == 0 }
+                    )
+                        return 0
+                    if (other.list.size > this.list.size) {
+                        // This will run out first
+                        for (i in this.list.indices) {
+                            val temp = this.list[i].compareTo(other.list[i])
+                            if (temp != 0) return temp
                         }
+                        // All indices are equal so far
+                        // The smallest is thus the shortest
+                        return -1
+                    } else {
+                        // Other will run out first
+                        for (i in other.list.indices) {
+                            val temp = this.list[i].compareTo(other.list[i])
+                            if (temp != 0) return temp
+                        }
+                        // All indices are equal so far
+                        // The smallest is thus the shortest
+                        return 1
                     }
                 }
             }
         }
-    }
 
-    class DataInteger(val value: Int) : Packet() {
-        override fun toString() = value.toString()
-    }
-
-    class DataList(val list: List<Packet>) : Packet() {
         override fun toString() = list.joinToString(", ", "[", "]")
     }
 
