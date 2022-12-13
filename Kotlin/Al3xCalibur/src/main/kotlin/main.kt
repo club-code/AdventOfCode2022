@@ -2,6 +2,7 @@ import d1.Day1
 import d10.Day10
 import d11.Day11
 import d12.Day12
+import d13.Day13
 import d2.Day2
 import d3.Day3
 import d4.Day4
@@ -25,4 +26,5 @@ fun main() {
     Day10().solve()
     Day11().solve()
     Day12().solve()
+    Day13().solve()
 }
