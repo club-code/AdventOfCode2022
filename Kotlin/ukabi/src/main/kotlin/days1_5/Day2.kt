@@ -1,6 +1,6 @@
 package days1_5
 
-import input2
+import inputs.input2
 
 fun playScore(play: String): Int = when(play) {
     "A" -> 1

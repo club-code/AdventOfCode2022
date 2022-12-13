@@ -1,7 +1,7 @@
 package days11_15
 
 import indexesOf
-import input12
+import inputs.input12
 import toArray
 import toMutableArray
 

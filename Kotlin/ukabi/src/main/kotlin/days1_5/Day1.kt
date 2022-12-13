@@ -1,6 +1,6 @@
 package days1_5
 
-import input1
+import inputs.input1
 
 fun day1(input: String, n: Int): Int =
     input

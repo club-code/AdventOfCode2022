@@ -1,6 +1,6 @@
 package days6_10
 
-import input6
+import inputs.input6
 
 fun count(string: String): MutableCollection<Int> {
     val counter = hashMapOf<Char, Int>()

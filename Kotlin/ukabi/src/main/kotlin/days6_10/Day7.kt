@@ -1,6 +1,6 @@
 package days6_10
 
-import input7
+import inputs.input7
 
 class File(val name: String, val size: Int)
 class Dir(val parent: Dir? = null, private val name: String) {

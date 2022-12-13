@@ -1,6 +1,6 @@
 package days6_10
 
-import input9
+import inputs.input9
 
 class Tail(private val head: Head) {
     var x: Int = 0

@@ -1,6 +1,6 @@
 package days6_10
 
-import input10
+import inputs.input10
 
 fun day10(input: String): List<Int> =
     mutableListOf(1)
