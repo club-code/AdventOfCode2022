@@ -1,3 +1,7 @@
+package d1
+
+import DaySolver
+
 class Day1 : DaySolver(1, "Calorie Counting") {
     private val aggregatedData = input.splitToSequence("\n\n")
         .map {
