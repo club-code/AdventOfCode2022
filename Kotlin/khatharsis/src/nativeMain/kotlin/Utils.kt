@@ -15,14 +15,6 @@ fun<E> List<List<E>>.rotate(): List<List<E>> =
         }
     }
 typealias Vector = Pair<Int, Int>
-inline fun <T> List<List<T>>.indexesOf(t: T): List<Vector> =
-    this.indices
-        .mapNotNull { i ->
-            this[i].indices.mapNotNull { j ->
-                if (this[i][j] == t) i to j else null
-            }
-        }
-        .flatten()
 fun Vector.getNeighbours() = listOf(
     this.first + 1 to this.second,
     this.first - 1 to this.second,
