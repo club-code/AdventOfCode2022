@@ -1,0 +1,1 @@
+p ($<.to_a*"").split("\n\n").map{|e|e.split("\n").map(&:to_i).sum}.max
