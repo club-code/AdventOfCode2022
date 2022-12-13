@@ -35,10 +35,9 @@ class Day13 : DaySolver(13, "Distress Signal") {
             return when (other) {
                 is DataInteger -> this.compareTo(DataList(kotlin.collections.listOf(other)))
                 is DataList -> {
-                    if (other.list.size == this.list.size && this.list.zip(other.list)
-                            .all { it.first.compareTo(it.second) == 0 }
-                    )
-                        return 0
+                    if (other.list.size == this.list.size &&
+                        this.list.zip(other.list).all { it.first.compareTo(it.second) == 0 }
+                    ) return 0 // They're equal
                     if (other.list.size > this.list.size) {
                         // This will run out first
                         for (i in this.list.indices) {
