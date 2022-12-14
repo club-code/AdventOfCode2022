@@ -1,3 +1,6 @@
+package d10
+
+import DaySolver
 import java.lang.StringBuilder
 
 class Day10 : DaySolver(10, "Cathode-Ray Tube") {

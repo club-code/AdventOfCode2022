@@ -1,3 +1,6 @@
+package d11
+
+import DaySolver
 import java.util.*
 
 class Day11 : DaySolver(11, "Monkey in the Middle") {

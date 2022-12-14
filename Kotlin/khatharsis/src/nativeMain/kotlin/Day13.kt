@@ -19,56 +19,54 @@ class Day13 : DaySolver(13, "Distress Signal") {
     }
 
 
-    sealed class Packet : Comparable<Packet> {
-        override operator fun compareTo(other: Packet): Int {
-            return when (this) {
-                is DataInteger -> {
-                    when (other) {
-                        is DataInteger -> this.value.compareTo(other.value)
-                        is DataList -> DataList(listOf(this)).compareTo(other)
-                    }
-                }
+    sealed interface Packet : Comparable<Packet>
 
+    class DataInteger(val value: Int) : Packet {
+        override fun compareTo(other: Packet): Int = when (other) {
+            is DataInteger -> this.value.compareTo(other.value)
+            is DataList -> if (other.size < 1) 1
+            else when (this.compareTo(other[0])) {
+                -1 -> -1
+                0 -> if (other.size == 1) 0 else -1
+                else -> 1
+            }
+        }
+
+        override fun toString() = value.toString()
+    }
+
+    class DataList(list: List<Packet>) : Packet, List<Packet> by list {
+        override fun compareTo(other: Packet): Int {
+            return when (other) {
+                is DataInteger -> -other.compareTo(this)
                 is DataList -> {
-                    when (other) {
-                        is DataInteger -> this.compareTo(DataList(listOf(other)))
-                        is DataList -> {
-                            if (other.list.size == this.list.size && this.list.zip(other.list)
-                                    .all { it.first.compareTo(it.second) == 0 }
-                            )
-                                return 0
-                            if (other.list.size > this.list.size) {
-                                // This will run out first
-                                for (i in this.list.indices) {
-                                    val temp = this.list[i].compareTo(other.list[i])
-                                    if (temp != 0) return temp
-                                }
-                                // All indices are equal so far
-                                // The smallest is thus the shortest
-                                return -1
-                            } else {
-                                // Other will run out first
-                                for (i in other.list.indices) {
-                                    val temp = this.list[i].compareTo(other.list[i])
-                                    if (temp != 0) return temp
-                                }
-                                // All indices are equal so far
-                                // The smallest is thus the shortest
-                                return 1
-                            }
+                    if (other.size == this.size &&
+                        this.zip(other).all { it.first.compareTo(it.second) == 0 }
+                    ) return 0 // They're equal
+                    if (other.size > this.size) {
+                        // This will run out first
+                        for (i in this.indices) {
+                            val temp = this[i].compareTo(other[i])
+                            if (temp != 0) return temp
                         }
+                        // All indices are equal
+                        // The smallest is thus the shortest
+                        return -1
+                    } else {
+                        // Other will run out first
+                        for (i in other.indices) {
+                            val temp = this[i].compareTo(other[i])
+                            if (temp != 0) return temp
+                        }
+                        // All indices are equal so far
+                        // The smallest is thus the shortest
+                        return 1
                     }
                 }
             }
         }
-    }
 
-    class DataInteger(val value: Int) : Packet() {
-        override fun toString() = value.toString()
-    }
-
-    class DataList(val list: List<Packet>) : Packet() {
-        override fun toString() = list.joinToString(", ", "[", "]")
+        override fun toString() = joinToString(", ", "[", "]")
     }
 
     private fun String.toPacket(): Packet {
