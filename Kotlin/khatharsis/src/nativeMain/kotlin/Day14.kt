@@ -6,22 +6,25 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
 
     private val world: MutableMap<Vector, Block> = data
         .map { line ->
-            line
-                .split(" -> ")
-                .map { couple ->
-                    couple.split(",")
-                        .let { it[0].toInt() to it[1].toInt() }
-                }
+            line.split(" -> ")
+                .map { it.split(",") }
+                .map { it[0].toInt() to it[1].toInt() }
                 .zipWithNext()
-        }
-        .map { line ->
-            line.map { (origin, destination) ->
-                (if (origin.first == destination.first) {
-                    ((origin.second..destination.second) + (destination.second..origin.second)).map { origin.first to it }
-                } else ((origin.first..destination.first) + (destination.first..origin.first)).map { it to origin.second })
-                    .map { it to Block.Rock }
-            }.flatten()
-        }.flatten().toMap().toMutableMap()
+        }.flatten() // List<Pair<Vector, Vector>>
+        .map { (origin, destination) ->
+            // Creates a line of Vector which shall be rocks
+            (if (origin.first == destination.first) {
+                (if (origin.second <= destination.second) {
+                    origin.second..destination.second
+                } else origin.second downTo destination.second)
+                    .map { origin.first to it }
+            } else
+                (if (origin.first <= destination.first) {
+                    origin.first..destination.first
+                } else origin.first downTo destination.first)
+                    .map { it to origin.second })
+        }.flatten().associateWith { Block.Rock }.toMutableMap()
+
 
     private val pouringPoint = 500 to 0
     private val abyssAbscissa = world.filterValues { it is Block.Rock }.keys.maxOf { it.second }
