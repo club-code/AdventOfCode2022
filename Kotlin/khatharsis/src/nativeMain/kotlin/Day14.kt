@@ -77,16 +77,12 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
 
 
     override fun firstPart(): String {
-        while (placeSand(abyssAbscissa).second < abyssAbscissa) {
-            //Do Nothing
-        }
+        while (placeSand(abyssAbscissa).second < abyssAbscissa) continue
         return world.count { it.value is Block.Sand }.toString()
     }
 
     override fun secondPart(): String {
-        while (placeSand(abyssAbscissa + 2) != pouringPoint) {
-            //Do Nothing
-        }
+        while (placeSand(abyssAbscissa + 2) != pouringPoint) continue
         return world.count { it.value is Block.Sand }.toString()
     }
 }
