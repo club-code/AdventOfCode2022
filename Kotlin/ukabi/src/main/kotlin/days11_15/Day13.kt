@@ -51,7 +51,6 @@ fun String.parse(): Value.ValList = Tree.parse(this).unfold()
 class Tree(private val root: Tree?, private var values: MutableList<Any> = mutableListOf()) {
 
     fun addChild() = Tree(this).also { this.values.add(it) }
-
     fun addValue(value: String) { this.values.add(value.toInt()) }
 
     fun unfold(): Value.ValList = Value.ValList(
@@ -121,7 +120,7 @@ fun day13b(input: String, key1: String, key2: String) =
             val k2 = key2.parse()
 
             (values + listOf(k1, k2))
-                .sortedBy { it }
+                .sorted()
                 .let { it.indexOf(k1) to it.indexOf(k2) }
         }
         .let { (it.first + 1) * (it.second + 1) }
