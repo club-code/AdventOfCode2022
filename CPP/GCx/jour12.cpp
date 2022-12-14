@@ -43,7 +43,7 @@ bool comp(std::shared_ptr<Node> a, std::shared_ptr<Node> b){
     return (a->min_distance < b->min_distance);
 }
 
-void Dijkstra(std::shared_ptr<Node> start){
+int Dijkstra(std::shared_ptr<Node> start){
     auto current_node = start;
     current_node->min_distance = 0;
     std::set<std::shared_ptr<Node>> not_seen;
@@ -81,15 +81,18 @@ void Dijkstra(std::shared_ptr<Node> start){
         }
     }
     
-
+    if (current_node->chara != 'E'){
+        return std::numeric_limits<int>::max();
+    }
+    
     int i =0;
-    while (current_node->chara != 'S'){
+    while (current_node != start){
         i++;
         std::cout << current_node->chara <<"<-";
         current_node = current_node->parent;
     }
     std::cout << current_node->chara<<std::endl;
-    std::cout << "Res = "<<i<<std::endl;
+    return i;
 }
 
 int flood_fill(std::shared_ptr<Node> start){
@@ -119,6 +122,15 @@ int flood_fill(std::shared_ptr<Node> start){
     return -1;
 }
 
+void reset_grid(std::vector<std::vector<std::shared_ptr<Node>>> vec){
+    for (auto it1 : vec){
+        for (auto it2 : it1){
+            it2->seen = false;
+            it2->min_distance = std::numeric_limits<int>::max();
+        }
+    }
+}
+
 int main(int argc, char** argv){
     if (argc == 3 && std::strcmp(argv[1], "test")==0){
 
@@ -136,12 +148,17 @@ int main(int argc, char** argv){
         std::vector<std::vector<std::shared_ptr<Node>>> grid;
 
         std::shared_ptr<Node> start;
+        std::vector<std::shared_ptr<Node>> starts_position;
         for (int i = 0; i < m; i++){
             grid.push_back(std::vector<std::shared_ptr<Node>>());
             for (int j = 0; j < n; j++){
                 grid[i].push_back(std::make_shared<Node>(lines[i][j]));
                 if (lines[i][j]=='S'){
                     start = grid[i][j];
+                }
+
+                if (lines[i][j]=='S' || lines[i][j]=='a'){
+                    starts_position.push_back(grid[i][j]);
                 }
             }
         }
@@ -157,6 +174,15 @@ int main(int argc, char** argv){
             }
         }
         // flood_fill(start);
-        Dijkstra(start);
+        int res1 = Dijkstra(start);
+        std::cout << "Res partie 1 = "<<res1<<std::endl;
+
+        int cur_min = std::numeric_limits<int>::max();
+        for (auto it : starts_position){
+            reset_grid(grid);
+            int res2 = Dijkstra(it);
+            cur_min = std::min(cur_min, res2);
+        }
+        std::cout << "Res 2 aux = " << cur_min <<std::endl;
     }
 }
