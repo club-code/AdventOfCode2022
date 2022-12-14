@@ -1,3 +1,7 @@
+package d2
+
+import DaySolver
+
 class Day2 : DaySolver(2, "Rock Paper Scissors") {
 
     private val aggregatedData = input.lineSequence()

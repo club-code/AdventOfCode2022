@@ -1,3 +1,7 @@
+package d8
+
+import DaySolver
+
 class Day8 : DaySolver(8, "Treetop Tree House") {
     override val exampleInput: String = """
         30373

@@ -1,10 +1,4 @@
 #include "day06.h"
-#include <iostream>
-#include <string>
-#include <algorithm> 
-#include <numeric>
-#include <vector>
-#include "AdventOfAkasuna.h"
 
 
 inline bool checkSequence(std::string sequence) {
