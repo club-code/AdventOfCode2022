@@ -1,6 +1,6 @@
 package days1_5
 
-import input5
+import inputs.input5
 import transpose
 
 fun day5(input: String): Pair<List<MutableList<String>>, List<List<Int>>> =

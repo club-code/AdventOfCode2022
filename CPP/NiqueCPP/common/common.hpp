@@ -31,6 +31,7 @@
 #include <tuple>
 #include <queue>
 #include <iterator>
+#include <list>
 
 #define fwd(x) static_cast<decltype(x)&&>(x)
 
@@ -110,9 +111,13 @@ std::ostream& operator<<(std::ostream& os, const std::pair<T,S> p) {
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T> v) {
-    os << "Vector{";
-    for (auto&& it = v.begin(); it != v.end()-1; ++it) os << *it << ", ";
-    os << v.back() << "}";
+    if (!v.empty()) {
+        os << "Vector{";
+        for (auto&& it = v.begin(); it != v.end()-1; ++it) os << *it << ", ";
+        os << v.back() << "}";
+    } else {
+        os << "Vector{}";
+    }
     return os;
 }
 

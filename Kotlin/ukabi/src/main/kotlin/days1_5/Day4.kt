@@ -1,6 +1,6 @@
 package days1_5
 
-import input4
+import inputs.input4
 
 fun day4(input: String): List<Pair<IntRange, IntRange>> =
     input

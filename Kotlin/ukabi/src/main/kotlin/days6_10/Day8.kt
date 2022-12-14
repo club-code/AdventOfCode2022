@@ -1,6 +1,6 @@
 package days6_10
 
-import input8
+import inputs.input8
 import toArray
 
 fun List<List<Int>>.isVisible(i: Int, j: Int, lineStart: Int, colStart: Int): Boolean =

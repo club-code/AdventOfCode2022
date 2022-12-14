@@ -1,6 +1,6 @@
 package days11_15
 
-import input11
+import inputs.input11
 import kotlin.properties.Delegates
 
 class Monkey(private val items: MutableList<Long>, private val operation: (Long) -> Long, private val test: Long, private val ifTrue: Int, private val ifFalse: Int) {

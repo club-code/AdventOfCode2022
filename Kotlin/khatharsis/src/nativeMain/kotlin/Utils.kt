@@ -14,3 +14,12 @@ fun<E> List<List<E>>.rotate(): List<List<E>> =
             this[j][i]
         }
     }
+typealias Vector = Pair<Int, Int>
+fun Vector.getNeighbours() = listOf(
+    this.first + 1 to this.second,
+    this.first - 1 to this.second,
+    this.first to this.second + 1,
+    this.first to this.second - 1
+)
+fun <T> Vector.getNeighbours(grid: List<List<T>>) = getNeighbours()
+    .filter { it.first >= 0 && it.second >= 0 && it.first < grid.size && it.second < grid[0].size }

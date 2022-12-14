@@ -1,0 +1,1 @@
+p $<.map(&:chomp).each_slice(3).map{|g|[*?a..?z,*?A..?Z].index(g.reduce{|a,b|(a.chars&b.chars).join})+1}.sum
