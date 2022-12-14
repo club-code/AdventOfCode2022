@@ -1,8 +1,5 @@
 class Day12 : DaySolver(12, "Hill Climbing Algorithm") {
     private val newData = data.map { it.toCharArray().toMutableList() }
-    private fun Vector.getValue(): Char {
-        return newData[this.first][this.second]
-    }
 
     // Le point d'arrivé, on récupère surtout ses coordonées
     private val arrivalPosition = newData
@@ -11,7 +8,7 @@ class Day12 : DaySolver(12, "Hill Climbing Algorithm") {
         .also {newData[it.first][it.second] = 'z' }
 
     // Map des points accessibles et de leur distance à l'arrivée
-    private val accessiblePoints = mutableMapOf<Vector, Int>()
+    private val accessiblePoints = mutableMapOf<Coordinates, Int>()
 
     override fun firstPart(): String {
         // Même chose que pour arrivalPoint
@@ -30,7 +27,7 @@ class Day12 : DaySolver(12, "Hill Climbing Algorithm") {
             accessiblePoints[curPosition] = cost
             curPosition.getNeighbours(newData)
                 .filter { !accessiblePoints.contains(it) } // Pas encore visité
-                .filter { curPosition.getValue() - it.getValue() <= 1 } // Accessible
+                .filter { curPosition[newData] - it[newData] <= 1 } // Accessible
                 .filter { !queue.containsKey(it) || queue[it]!! > cost + 1 }
                 // Qui n'ont pas encore été vu
                 // ou qui ont un moins bon chemin

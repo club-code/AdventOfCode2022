@@ -4,7 +4,7 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
         object Rock : Block
     }
 
-    private val world: MutableMap<Vector, Block> = data
+    private val world: MutableMap<Coordinates, Block> = data
         .map { line ->
             line.split(" -> ")
                 .map { it.split(",") }
@@ -30,13 +30,13 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
     private val abyssAbscissa = world.filterValues { it is Block.Rock }.keys.maxOf { it.second }
 
     // Any block of sand falling below that shall be lost to the abyss
-    private val path = mutableListOf<Vector>()
+    private val path = mutableListOf<Coordinates>()
     // This is a way to remember the current direct path of our sand blocks
 
     /**
      * Given a vector (current position), returns the next position this block of sand should go.
      */
-    private fun sandGoesDownward(curPosition: Vector): Vector {
+    private fun sandGoesDownward(curPosition: Coordinates): Coordinates {
         // Rocky floor
         if (curPosition.second == abyssAbscissa + 1) return curPosition
         // Go down, left or right
@@ -51,7 +51,7 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
         return curPosition
     }
 
-    private fun placeSand(maxFloor: Int): Vector {
+    private fun placeSand(maxFloor: Int): Coordinates {
         // Let's start where we left off (or at the pouring Point)
         var curPosition = path.lastOrNull() ?: pouringPoint
 

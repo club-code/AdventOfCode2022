@@ -8,18 +8,21 @@ fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf
     }
 }
 
-fun<E> List<List<E>>.rotate(): List<List<E>> =
-    (0 until this[0].size).map {i->
+fun List<List<*>>.rotate(): List<List<*>> =
+    this[0].indices.map {i->
         (this.indices).map { j->
             this[j][i]
         }
     }
-typealias Vector = Pair<Int, Int>
-fun Vector.getNeighbours() = listOf(
+typealias Coordinates = Pair<Int, Int>
+inline fun Coordinates.getNeighbours() = listOf(
     this.first + 1 to this.second,
     this.first - 1 to this.second,
     this.first to this.second + 1,
     this.first to this.second - 1
 )
-fun <T> Vector.getNeighbours(grid: List<List<T>>) = getNeighbours()
+inline fun <T> Coordinates.getNeighbours(grid: List<List<T>>) = getNeighbours()
     .filter { it.first >= 0 && it.second >= 0 && it.first < grid.size && it.second < grid[0].size }
+
+inline operator fun Coordinates.plus(other: Coordinates) = this.first + other.first to this.second to other.second
+inline operator fun <T> Coordinates.get(grid: List<List<T>>) = grid[this.first][this.second]
