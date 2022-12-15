@@ -46,7 +46,7 @@ sealed class Value : Comparable<Value> {
     abstract fun unfold(): Any
 }
 
-fun String.parse(): Value.ValList = Tree.parse(this).unfold()
+fun String.parseValue(): Value.ValList = Tree.parse(this).unfold()
 
 class Tree(private val root: Tree?, private var values: MutableList<Any> = mutableListOf()) {
 
@@ -105,7 +105,7 @@ class Tree(private val root: Tree?, private var values: MutableList<Any> = mutab
 fun day13a(input: String) =
     input
         .split("\n\n")
-        .map { block -> block.split("\n").let { it[0].parse() to it[1].parse() }}
+        .map { block -> block.split("\n").let { it[0].parseValue() to it[1].parseValue() }}
         .mapIndexed {i, couple -> i to couple}
         .filter { it.second.first <= it.second.second }
         .sumOf { it.first + 1 }
@@ -114,10 +114,10 @@ fun day13b(input: String, key1: String, key2: String) =
     input
         .split("\n")
         .filter { it.isNotEmpty() }
-        .map { it.parse() }
+        .map { it.parseValue() }
         .let { values ->
-            val k1 = key1.parse()
-            val k2 = key2.parse()
+            val k1 = key1.parseValue()
+            val k2 = key2.parseValue()
 
             (values + listOf(k1, k2))
                 .sorted()

@@ -4,36 +4,39 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
         object Rock : Block
     }
 
-    private val world: MutableMap<Vector, Block> = data
+    private val world: MutableMap<Coordinates, Block> = data
         .map { line ->
-            line
-                .split(" -> ")
-                .map { couple ->
-                    couple.split(",")
-                        .let { it[0].toInt() to it[1].toInt() }
-                }
+            line.split(" -> ")
+                .map { it.split(",") }
+                .map { it[0].toInt() to it[1].toInt() }
                 .zipWithNext()
-        }
-        .map { line ->
-            line.map { (origin, destination) ->
-                (if (origin.first == destination.first) {
-                    ((origin.second..destination.second) + (destination.second..origin.second)).map { origin.first to it }
-                } else ((origin.first..destination.first) + (destination.first..origin.first)).map { it to origin.second })
-                    .map { it to Block.Rock }
-            }.flatten()
-        }.flatten().toMap().toMutableMap()
+        }.flatten() // List<Pair<Vector, Vector>>
+        .map { (origin, destination) ->
+            // Creates a line of Vector which shall be rocks
+            (if (origin.first == destination.first) {
+                (if (origin.second <= destination.second) {
+                    origin.second..destination.second
+                } else origin.second downTo destination.second)
+                    .map { origin.first to it }
+            } else
+                (if (origin.first <= destination.first) {
+                    origin.first..destination.first
+                } else origin.first downTo destination.first)
+                    .map { it to origin.second })
+        }.flatten().associateWith { Block.Rock }.toMutableMap()
+
 
     private val pouringPoint = 500 to 0
     private val abyssAbscissa = world.filterValues { it is Block.Rock }.keys.maxOf { it.second }
 
     // Any block of sand falling below that shall be lost to the abyss
-    private val path = mutableListOf<Vector>()
+    private val path = mutableListOf<Coordinates>()
     // This is a way to remember the current direct path of our sand blocks
 
     /**
      * Given a vector (current position), returns the next position this block of sand should go.
      */
-    private fun sandGoesDownward(curPosition: Vector): Vector {
+    private fun sandGoesDownward(curPosition: Coordinates): Coordinates {
         // Rocky floor
         if (curPosition.second == abyssAbscissa + 1) return curPosition
         // Go down, left or right
@@ -48,7 +51,7 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
         return curPosition
     }
 
-    private fun placeSand(maxFloor: Int): Vector {
+    private fun placeSand(maxFloor: Int): Coordinates {
         // Let's start where we left off (or at the pouring Point)
         var curPosition = path.lastOrNull() ?: pouringPoint
 
@@ -74,16 +77,12 @@ class Day14 : DaySolver(14, "Regolith Reservoir") {
 
 
     override fun firstPart(): String {
-        while (placeSand(abyssAbscissa).second < abyssAbscissa) {
-            //Do Nothing
-        }
+        while (placeSand(abyssAbscissa).second < abyssAbscissa) continue
         return world.count { it.value is Block.Sand }.toString()
     }
 
     override fun secondPart(): String {
-        while (placeSand(abyssAbscissa + 2) != pouringPoint) {
-            //Do Nothing
-        }
+        while (placeSand(abyssAbscissa + 2) != pouringPoint) continue
         return world.count { it.value is Block.Sand }.toString()
     }
 }
