@@ -1,0 +1,1 @@
+p [gets].map{|l|(0..l.size-4).map{|i|l[i...i+4].chars.uniq.size==4}}[0].index(true)+4

@@ -5,7 +5,6 @@
 #include <vector>
 #include <memory>
 using namespace std; //very useful
-ifstream infile("ressource/day7.txt");
 
 struct tree{
     struct tree *father;
@@ -56,7 +55,28 @@ int recursive_sum(tree* curdir){
     return sum;
 }
 
-int part1(){
+int recursive_searchfree(tree* curdir, int neededspace){
+    int val=0;
+    int tempval;
+    if(curdir->fileweight>neededspace){//add our weight if it respects specifications
+        val=curdir->fileweight;
+        if(!curdir->children.empty()){
+            for(auto &child : curdir->children){//check in the children
+                tempval=recursive_searchfree(child.get(),neededspace);
+                if(tempval<val && tempval>=neededspace){
+                    val=tempval;
+                }
+            }
+        }
+    }
+    else{//not big, enough dont check children
+        return 0;
+    }
+    return val;
+}
+
+unique_ptr<tree> init(){
+    ifstream infile("ressource/day7.txt");
     struct tree* curdir;
     string line;
     string trash;
@@ -102,22 +122,30 @@ int part1(){
             //cout << curdir->fileweight << " current weight for dir " << curdir->name <<"\n";
         }
     }
+    infile.close();
+    return root;
+}
+
+int part1(){
+    unique_ptr<tree> root=init();
     root->fileweight= recursive_weighcount(root.get());
-    sum=recursive_sum(root.get());
+    int sum=recursive_sum(root.get());
     return sum;
 }
 
 int part2(){
-    ifstream infile("ressource/day5.txt");
-    return 0;
+    unique_ptr<tree> root=init();
+    root->fileweight=recursive_weighcount(root.get());
+    int neededspace=30000000-(70000000-root->fileweight);
+    int size=recursive_searchfree(root.get(), neededspace);
+    return size;
 }
 
 int main()
 {
     int res = part1();
     cout << "The sum of files weighs " << res << "\n";
-    //string res2 = part2();
-    //cout << "The top of piles with the new crane is : " << res2 << "\n";
-    infile.close();
+    int res2 = part2();
+    cout << "The smallest file to delete weighs : " << res2 << "\n";
     return 0;
 }

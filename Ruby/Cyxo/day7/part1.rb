@@ -1,0 +1,1 @@
+p $<.inject([[],{}]){|m,e|[e=~/cd .*/?((d=e.scan(/cd (.*)/)[0][0])==".."?m[0][0...-1]:m[0]+[d.sub("/","")]):m[0],e=~/\d+ .*/?m[1].merge({[m[0],(f=e.scan(/(\d+) (.*)/)[0])[1]].join("/")=>f[0].to_i}):m[1]]}[1].inject({"/"=>0}){|m,(p,s)|p.split("/")[0...-1].inject([]){|a,f|a+=[(a.last||"")+f+"/"]}.inject(m){|n,f|n.merge({f=>(n[f]||0)+s})}}.map{|(k,v)|v>1e5?0:v}.sum
