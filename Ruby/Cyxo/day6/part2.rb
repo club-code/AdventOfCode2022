@@ -1,0 +1,1 @@
+p [gets].map{|l|(0..l.size-14).map{|i|l[i...i+14].chars.uniq.size==14}}[0].index(true)+14
