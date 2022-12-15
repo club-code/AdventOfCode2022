@@ -1,4 +1,22 @@
-import platform.posix.abs
+import kotlinx.cinterop.refTo
+import kotlinx.cinterop.toKString
+import platform.posix.*
+
+fun execAndStdOut(command: String): String {
+    val fp = popen(command, "r")
+    val stdout = buildString {
+        val buffer = ByteArray(4096)
+        while (true) {
+            val input = fgets(buffer.refTo(0), buffer.size, fp) ?: break
+            append(input.toKString())
+        }
+    }
+    val status = pclose(fp)
+    if (status != 0) {
+        error("Failed to get input from server: status $status")
+    }
+    return stdout
+}
 
 fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf<String>())) { acc, it ->
     if (it.isBlank()) {
@@ -11,18 +29,20 @@ fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf
 }
 
 fun <E> List<List<E>>.rotate(): List<List<E>> =
-    this[0].indices.map {i->
-        (this.indices).map { j->
+    this[0].indices.map { i ->
+        (this.indices).map { j ->
             this[j][i]
         }
     }
 typealias Coordinates = Pair<Int, Int>
+
 inline fun Coordinates.getNeighbours() = listOf(
     this.first + 1 to this.second,
     this.first - 1 to this.second,
     this.first to this.second + 1,
     this.first to this.second - 1
 )
+
 inline fun <T> Coordinates.getNeighbours(grid: List<List<T>>) = getNeighbours()
     .filter { it.first >= 0 && it.second >= 0 && it.first < grid.size && it.second < grid[0].size }
 

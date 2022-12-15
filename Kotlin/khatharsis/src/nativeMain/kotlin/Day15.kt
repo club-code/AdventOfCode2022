@@ -1,3 +1,5 @@
+import kotlinx.atomicfu.locks.reentrantLock
+import kotlinx.atomicfu.locks.withLock
 import platform.posix.abs
 
 class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
@@ -88,13 +90,16 @@ class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
     override fun secondPart(): String {
         val max = 4_000_000
         val minMax = 0 to max
-        for (line in 0..max) {
-            val coverage = coverage(line, minMax).sortedBy { it.first }
-            if (coverage.fold(0) { acc, pair -> acc + pair.count() } == max) {
-                val x = coverage.zipWithNext().first { (cur, next) -> cur.second != next.first - 1 }.first.second + 1
-                return (4_000_000L * x + line).toString()
+        val step = max/(NUM_CORES)
+        return executeParallel { threadNumber ->
+            for (line in (threadNumber*step) .. (threadNumber+1)*step) {
+                val coverage = coverage(line, minMax).sortedBy { it.first }
+                if (coverage.fold(0) { acc, pair -> acc + pair.count() } == max) {
+                    val x = coverage.zipWithNext().first { (cur, next) -> cur.second != next.first - 1 }.first.second + 1
+                    return@executeParallel (4_000_000L * x + line).toString()
+                }
             }
-        }
-        return super.secondPart()
+            null
+        }.first()
     }
 }

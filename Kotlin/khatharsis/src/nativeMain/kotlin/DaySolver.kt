@@ -22,21 +22,7 @@ open class DaySolver(val day: Int, val name: String, val year: Int = 2022) {
         val command = "if [ ! -f \"inputs/day$day.txt\" ]; then curl -s https://adventofcode.com/$year/day/$day/input " +
                 "-H \"Cookie:session=$cookie\" -o inputs/day$day.txt; fi"
         system(command)
-        val fp = popen("cat inputs/day$day.txt", "r")
-
-        val stdout = buildString {
-            val buffer = ByteArray(4096)
-            while (true) {
-                val input = fgets(buffer.refTo(0), buffer.size, fp) ?: break
-                append(input.toKString())
-            }
-        }
-
-        val status = pclose(fp)
-        if (status != 0) {
-            error("Failed to get input from server: status $status")
-        }
-        stdout.split('\n').dropLast(1)
+        execAndStdOut("cat inputs/day$day.txt").split('\n').dropLast(1)
     }
 }
 
