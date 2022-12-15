@@ -2,7 +2,8 @@ import platform.posix.abs
 
 class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
     private val lineRegex = Regex("Sensor at x=(-?\\d+), y=(-?\\d+): closest beacon is at x=(-?\\d+), y=(-?\\d+)")
-    private val sensorMap = data.map { line -> lineRegex.matchEntire(line)!!.groupValues.takeLast(4).map { it.toInt() } }
+    private val sensorMap =
+        data.map { line -> lineRegex.matchEntire(line)!!.groupValues.takeLast(4).map { it.toInt() } }
             .associate { (it[0] to it[1]) to (it[2] to it[3]) }
 
     /**
@@ -58,41 +59,30 @@ class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
                 }
             } else it
         }.toMutableList()
-        var i = 0
-        for (pair in temp) {
-            if (pair != null) {
-                var j = i + 1
-                for (newPair in temp.drop(i + 1)) {
-                    if (newPair != null) {
-                        when (pair.status(newPair)) {
-                            Status.EQUALS, Status.CONTAINS -> {
-                                temp[j] = null
-                            }
 
-                            Status.CONTAINED -> {
-                                temp[i] = null
-                            }
-
-                            Status.INTERSECT -> {
-                                if (newPair.first < pair.first) {
-                                    temp[j] = newPair.first to pair.first - 1
-                                } else temp[j] = pair.second + 1 to newPair.second
-                            }
-
-                            Status.DISJOINT -> {}
-                        }
+        return temp.indices.mapNotNull { i ->
+            var tempPair: Pair<Int, Int>? = temp[i]
+            for ((j, newPair) in temp.drop(i + 1).withIndex()) {
+                if (tempPair == null) break
+                if (newPair != null)
+                    when (tempPair.status(newPair)) {
+                        Status.CONTAINED -> tempPair = null
+                        Status.EQUALS, Status.CONTAINS -> temp[i + j + 1] = null
+                        Status.DISJOINT -> {}
+                        Status.INTERSECT -> temp[i + j + 1] = if (newPair.first < tempPair.first)
+                            newPair.first to tempPair.first - 1
+                        else tempPair.second + 1 to newPair.second
                     }
-                    j++
-                }
             }
-            i++
+            tempPair
         }
-        return temp.filterNotNull()
+        // This code is more readable but less efficient
     }
 
     override fun firstPart(): String {
         val lineNumber = 2000000
-        return (coverage(lineNumber).fold(0) { acc, pair -> acc + pair.count() } - sensorMap.values.count { it.second == lineNumber }).toString()
+        return (coverage(lineNumber).fold(0) { acc, pair -> acc + pair.count() } - sensorMap.values.toSet()
+            .count { it.second == lineNumber }).toString()
     }
 
     override fun secondPart(): String {
@@ -101,8 +91,8 @@ class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
         for (line in 0..max) {
             val coverage = coverage(line, minMax).sortedBy { it.first }
             if (coverage.fold(0) { acc, pair -> acc + pair.count() } == max) {
-                val x = coverage.zipWithNext().first { (cur, next) -> cur.second != next.first -1 }.first.second+1
-                return (4000000L * x + line).toString()
+                val x = coverage.zipWithNext().first { (cur, next) -> cur.second != next.first - 1 }.first.second + 1
+                return (4_000_000L * x + line).toString()
             }
         }
         return super.secondPart()
