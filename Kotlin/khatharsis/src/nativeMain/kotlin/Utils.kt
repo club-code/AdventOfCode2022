@@ -1,3 +1,5 @@
+import platform.posix.abs
+
 fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf<String>())) { acc, it ->
     if (it.isBlank()) {
         acc.add(mutableListOf<String>())
@@ -8,7 +10,7 @@ fun List<String>.groupBySeparatorBlank() = this.fold(mutableListOf(mutableListOf
     }
 }
 
-fun List<List<*>>.rotate(): List<List<*>> =
+fun <E> List<List<E>>.rotate(): List<List<E>> =
     this[0].indices.map {i->
         (this.indices).map { j->
             this[j][i]
@@ -26,3 +28,5 @@ inline fun <T> Coordinates.getNeighbours(grid: List<List<T>>) = getNeighbours()
 
 inline operator fun Coordinates.plus(other: Coordinates) = this.first + other.first to this.second to other.second
 inline operator fun <T> Coordinates.get(grid: List<List<T>>) = grid[this.first][this.second]
+
+inline fun Coordinates.manhattan(other: Coordinates) = abs(this.first - other.first) + abs(this.second - other.second)
