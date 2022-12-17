@@ -33,6 +33,7 @@ kotlin {
             dependencies {
                 // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-linuxx64
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-$platform:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
             }
         }
     }

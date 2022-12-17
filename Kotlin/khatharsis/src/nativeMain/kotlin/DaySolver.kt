@@ -1,4 +1,5 @@
 import kotlinx.cinterop.*
+import platform.linux.exec
 import platform.posix.*
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
@@ -17,23 +18,11 @@ open class DaySolver(val day: Int, val name: String, val year: Int = 2022) {
         println("   Time taken: $time")
     }
     val data: List<String> = run {
-        val command = "curl -s https://adventofcode.com/$year/day/$day/input " +
-                "-H \"Cookie:session=$cookie\""
-        val fp = popen(command, "r")
-
-        val stdout = buildString {
-            val buffer = ByteArray(4096)
-            while (true) {
-                val input = fgets(buffer.refTo(0), buffer.size, fp) ?: break
-                append(input.toKString())
-            }
-        }
-
-        val status = pclose(fp)
-        if (status != 0) {
-            error("Failed to get input from server: status $status")
-        }
-        stdout.split('\n').dropLast(1)
+        system("mkdir -p inputs")
+        val command = "if [ ! -f \"inputs/day$day.txt\" ]; then curl -s https://adventofcode.com/$year/day/$day/input " +
+                "-H \"Cookie:session=$cookie\" -o inputs/day$day.txt; fi"
+        system(command)
+        execAndStdOut("cat inputs/day$day.txt").split('\n').dropLast(1)
     }
 }
 

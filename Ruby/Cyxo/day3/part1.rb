@@ -1,0 +1,1 @@
+p $<.map(&:chomp).map{|l|[*?a..?z,*?A..?Z].index(l.split(/(?<=\A.{#{l.size/2}})/).reduce{|a,b|a.chars&b.chars}[0])+1}.sum

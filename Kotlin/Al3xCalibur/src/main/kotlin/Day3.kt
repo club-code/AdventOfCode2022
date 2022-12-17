@@ -1,3 +1,7 @@
+package d3
+
+import DaySolver
+
 class Day3 : DaySolver(3, "Rucksack Reorganization") {
     override val exampleInput: String = """
         vJrwpWtwJgWrhcsFMMfFFhFp

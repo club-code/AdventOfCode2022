@@ -1,3 +1,7 @@
+package d7
+
+import DaySolver
+
 class Day7 : DaySolver(7, "No Space Left On Device") {
     override val exampleInput: String = """
         $ cd /

@@ -1,3 +1,6 @@
+package d9
+
+import DaySolver
 import kotlin.math.abs
 
 class Day9 : DaySolver(9, "Treetop Tree House") {

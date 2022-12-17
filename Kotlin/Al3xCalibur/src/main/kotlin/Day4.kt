@@ -1,3 +1,7 @@
+package d4
+
+import DaySolver
+
 class Day4 : DaySolver(4, "Camp Cleanup") {
     override val exampleInput: String = """
         2-4,6-8
