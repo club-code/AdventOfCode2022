@@ -112,7 +112,7 @@ int jour13partie1(std::vector<std::pair<std::string, std::string>> pairs){
         }
         i++;
     }
-    std::cout << "Partie 1 ="<<res;
+    std::cout << "Partie 1 ="<<res<<std::endl;
     return res;
 }
 
