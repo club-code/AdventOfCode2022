@@ -23,9 +23,13 @@ Valve JJ has flow rate=21; tunnel leads to valve II""".split("\n")
     )
 
     private fun Valve.getNeighbours() = neighbours.mapNotNull { valveMap[it] }
-    private val distanceMap = valveMap.map {it.key to mutableMapOf<String, Int>()}.toMap()
+
+    // Map des distances entre les Valves.
+    private val distanceMap = valveMap.map { it.key to mutableMapOf<String, Int>() }.toMap()
+
+    // Vérifie si la valeur est dans la map sinon la compute et la met dans la map
     private fun Valve.distanceTo(other: Valve): Int =
-        distanceMap[this.id]!![other.id] ?: run {
+        distanceMap[this.id]!![other.id] ?: (run {
             val visited = mutableSetOf<Valve>()
             val toVisit = mutableListOf(this to 0)
             while (toVisit.isNotEmpty()) {
@@ -38,31 +42,44 @@ Valve JJ has flow rate=21; tunnel leads to valve II""".split("\n")
                     .forEach { toVisit.add(it to curNode.second + 1) }
             }
             0
-        }.also { distanceMap[this.id]!![other.id] = it; distanceMap[other.id]!![this.id] = it }
+        }.also { distanceMap[this.id]!![other.id] = it; distanceMap[other.id]!![this.id] = it })
+
     private val usefulValves = valveMap.values.filter { it.flowRate > 0 }
+
+    // Anciennement utilisé dans Path.potential, mais la méthode a été améliorée depuis
     private val maxFlowRate = usefulValves.sumOf { it.flowRate }
 
-
-    class Path(val curMinute: Int, val steamReleased: Int, val curValve: Valve, val openedValve: List<Valve>) {
+    // Une classe représentant un Path, à une minute donnée
+    // On part du principe que c'est un path partant de AA et prenant toujours le plus cours chemin entre
+    // Le node où il est est le node suivant qu'il à ouvert (ie les nodes dans openedValves)
+    // Le node sur lequel il est actuellement est curValve
+    class Path(
+        val curMinute: Int,
+        val steamReleased: Int,
+        val curValve: Valve,
+        val openedValve: List<Valve>
+    ) {
         val flowRate = openedValve.sumOf { it.flowRate }
         override fun toString() = "Path(curMinute=$curMinute, " +
                 "steamReleased=$steamReleased @ $flowRate/min, " +
                 "curValve=${curValve.id}, " +
-                "openedValves=${openedValve.filter {it.flowRate > 0}.joinToString(",", "[", "]") { it.id }})"
+                "openedValves=${openedValve.filter { it.flowRate > 0 }.joinToString(",", "[", "]") { it.id }})"
     }
 
+    // Renvoie la liste des paths disponibles depuis celui ci
     private fun Path.getNextPaths(maxTime: Int) = usefulValves
         .filterNot { it in openedValve }
         .filter { it.distanceTo(curValve) + curMinute <= maxTime }
         .map {
             Path(
                 curMinute + it.distanceTo(curValve) + 1, // Takes one minute to open it
-                steamReleased + (it.distanceTo(curValve)+1) * flowRate,
+                steamReleased + (it.distanceTo(curValve) + 1) * flowRate,
                 it,
                 openedValve + it
 
             )
-        }.takeUnless { it.isEmpty() } ?: listOf(
+        } // S'il n'y a aucune valve qui reste accessible, alors on n'a qu'à attendre.
+        .takeUnless { it.isEmpty() } ?: listOf(
         Path(
             30,
             steamReleased + (flowRate * (30 - curMinute)),
@@ -71,9 +88,13 @@ Valve JJ has flow rate=21; tunnel leads to valve II""".split("\n")
         )
     )
 
+    // Potentiel = Borne sup de la quantité de vapeur relachée
+    // La formule potential = steamRelease + (maxTime - curMinute) * maxFlowrate est également vrai,
+    // Mais donne une born sup plus haute.
     private fun Path.potential(maxTime: Int) = steamReleased +
             (maxTime - curMinute) * flowRate +
-            usefulValves.filterNot { it in openedValve }.sumOf { max(0,(maxTime - curMinute - curValve.distanceTo(it)))*flowRate }
+            usefulValves.filterNot { it in openedValve }
+                .sumOf { max(0, (maxTime - curMinute - curValve.distanceTo(it))) * flowRate }
 
 
     override fun firstPart(): String {
@@ -100,8 +121,9 @@ Valve JJ has flow rate=21; tunnel leads to valve II""".split("\n")
             }
             if (curPath.curMinute < maxTime) pathSet.addAll(
                 if (maxPath.curMinute == maxTime)
-                    curPath.getNextPaths(maxTime).filter {it.potential(maxTime) >= maxPath.steamReleased
-                } else curPath.getNextPaths(maxTime)
+                    curPath.getNextPaths(maxTime).filter {
+                        it.potential(maxTime) >= maxPath.steamReleased
+                    } else curPath.getNextPaths(maxTime)
             )
         }
         return maxPath?.steamReleased.toString()
