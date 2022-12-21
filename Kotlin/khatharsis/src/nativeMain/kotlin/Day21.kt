@@ -77,12 +77,8 @@ class Day21 : DaySolver(21, "Monkey Math") {
                 }
                 continue
             }
-            if (operationMap.containsKey(curOpArgs.first)) {
-                stack.add(curOpArgs.first)
-            }
-            if (operationMap.containsKey(curOpArgs.third)) {
-                stack.add(curOpArgs.third)
-            }
+            if (operationMap.containsKey(curOpArgs.first)) stack.add(curOpArgs.first)
+            if (operationMap.containsKey(curOpArgs.third)) stack.add(curOpArgs.third)
         }
         return numberMap[startingValue]
     }
