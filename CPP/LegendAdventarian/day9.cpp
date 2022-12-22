@@ -73,12 +73,12 @@ int part1(){
                     }
                 }
             } 
-            string pos= to_string(tail[0]) + to_string(tail[1]);
+            string pos= to_string(tail[0]) +","+ to_string(tail[1]);
             if(find(position.begin(),position.end(),pos)==position.end()){
                 position.push_back(pos);
             }
-            cout << "tail at " << tail[0] <<","<< tail[1] << "\n";
-            cout << position.size() << "\n";
+            cout << "tail at " << head[0] <<","<< head[1] << "\n";
+            //cout << position.size() << "\n";
         } 
     }
     return position.size();
