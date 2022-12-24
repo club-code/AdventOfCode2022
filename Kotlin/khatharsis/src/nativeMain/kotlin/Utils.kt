@@ -35,6 +35,7 @@ fun <E> List<List<E>>.rotate(): List<List<E>> =
         }
     }
 typealias Coordinates = Pair<Int, Int>
+typealias Coordinates3D = Triple<Int, Int, Int>
 
 inline fun Coordinates.getNeighbours() = listOf(
     this.first + 1 to this.second,
@@ -42,6 +43,17 @@ inline fun Coordinates.getNeighbours() = listOf(
     this.first to this.second + 1,
     this.first to this.second - 1
 )
+
+inline fun Coordinates3D.getNeighbours() = listOf(
+    Triple(first, second, third + 1),
+    Triple(first, second, third - 1),
+    Triple(first, second + 1, third),
+    Triple(first, second - 1, third),
+    Triple(first + 1, second, third),
+    Triple(first - 1, second, third)
+)
+
+inline fun IntRange.size() = last - first + 1
 
 inline fun <T> Coordinates.getNeighbours(grid: List<List<T>>) = getNeighbours()
     .filter { it.first >= 0 && it.second >= 0 && it.first < grid.size && it.second < grid[0].size }

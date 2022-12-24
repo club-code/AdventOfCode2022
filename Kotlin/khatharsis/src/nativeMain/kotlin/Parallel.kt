@@ -32,7 +32,7 @@ inline fun executeParallel(lambda: (Int) -> String?): List<String> {
         }
         return (0 until NUM_CORES).mapNotNull { responseThreadNumber ->
             if (system("test -f $threadExecDir/$responseThreadNumber") == 0) {
-                execAndStdOut("cat $threadExecDir/$responseThreadNumber")
+                execAndStdOut("cat $threadExecDir/$responseThreadNumber").dropLast(1)
             } else null
         }.also { system("rm -rf $threadExecDir") }
     } else {
