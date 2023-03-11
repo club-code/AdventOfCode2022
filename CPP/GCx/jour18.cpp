@@ -4,7 +4,6 @@
 #include <string>
 #include <set>
 
-
 std::vector<std::string> split(std::string s, std::string delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     std::string token;
@@ -63,7 +62,7 @@ int get_number_neighbours(std::set<Triplet> cubes, Triplet t){
 
 int jour18partie1(std::vector<std::string> lines){
     std::set<Triplet> cubes;
-    int intersections;
+    int intersections = 0;
     for (auto line : lines){
         std::cout << Triplet{line} << std::endl; 
         cubes.insert(Triplet(line));
@@ -71,6 +70,45 @@ int jour18partie1(std::vector<std::string> lines){
     }
     
     return 6*cubes.size() - 2*intersections;
+}
+
+
+size_t flood_fill(std::set<Triplet> cubes){
+    size_t faces = 0; 
+    std::vector<Triplet> stack{Triplet(1, 1, 1)};
+    std::set<Triplet> seen;
+    while(!stack.empty()){
+        Triplet cur = stack.back();
+        std::cout << "Seen = "<<cur << std::endl;
+        stack.pop_back();
+        if (seen.find(cur)==seen.end()){
+            seen.insert(cur);
+            for (auto t_aux : {Triplet{1,0,0}, Triplet{-1, 0, 0}, Triplet{0, 1, 0}, Triplet{0, -1, 0}, Triplet{0, 0, 1}, Triplet{0, 0, -1}}){
+                Triplet cur_neighbour{cur.x + t_aux.x, cur.y + t_aux.y, cur.z + t_aux.z};
+                if (cubes.find(cur_neighbour) != cubes.end()){
+                    std::cout << cur_neighbour << " is a neighbour of "<<cur<<std::endl;
+                    faces++;
+                    std::cout << "faces : "<<faces<<std::endl;
+                } else if (seen.find(cur_neighbour) == seen.end() 
+                        && -1 <= cur_neighbour.x && cur_neighbour.x < 23
+                        && -1 <= cur_neighbour.y && cur_neighbour.y < 23
+                        && -1 <= cur_neighbour.z && cur_neighbour.z < 23){
+                    std::cout << "Adding "<<cur_neighbour<<" to the stack"<<std::endl;
+                    stack.push_back(cur_neighbour);
+                }
+            }
+        }
+    }
+    return faces;
+}
+
+size_t jour18partie2(std::vector<std::string> lines){
+    std::set<Triplet> cubes;
+    for (auto line : lines){
+        cubes.insert(Triplet(line));
+    }
+
+    return flood_fill(cubes);
 }
 
 int main(int argc, char** argv){
@@ -88,7 +126,13 @@ int main(int argc, char** argv){
         for (std::string line : lines){
             std::cout << line << std::endl;
         }
-        int res = jour18partie1(lines);
+
+        size_t res;
+        if (argc ==3 && std::strcmp(argv[1], "1")==0){
+            res = jour18partie1(lines);
+        } else if (argc == 3 && std::strcmp(argv[1], "2")==0){
+            res = jour18partie2(lines);
+        }
         std::cout << "Res = "<<res <<std::endl;
     }
     return 0;
