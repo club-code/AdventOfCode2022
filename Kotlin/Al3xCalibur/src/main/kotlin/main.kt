@@ -5,6 +5,7 @@ import d12.Day12
 import d13.Day13
 import d14.Day14
 import d15.Day15
+import d16.Day16
 import d2.Day2
 import d3.Day3
 import d4.Day4
@@ -31,4 +32,6 @@ fun main() {
     Day13().solve()
     Day14().solve()
     Day15().solve()
+    // Disabled by default to avoid the duration (1 minute)
+//    Day16().solve()
 }

@@ -31,16 +31,15 @@ class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
 
     /**
      * Gives the status of a pair compared to another.
+     * We know that this.first <= other.first and if (this.first == other.first) then this.second <= other.second
      */
     private fun Pair<Int, Int>.status(other: Pair<Int, Int>): Status = when {
         (this == other) -> Status.EQUALS
-        (other.first <= this.first && this.second <= other.second) -> Status.CONTAINED
-        (this.first <= other.first && other.second <= this.second) -> Status.CONTAINS
-        (other.first <= this.first && this.first <= other.second) -> Status.INTERSECT
-        (this.first <= other.first && other.first <= this.second) -> Status.INTERSECT
-        (other.first <= this.second && this.second <= other.second) -> Status.INTERSECT
-        (this.first <= other.second && other.second <= this.second) -> Status.INTERSECT
-        else -> Status.DISJOINT
+        (this.first == other.first) -> Status.CONTAINED
+        (other.second <= this.second) -> Status.CONTAINS
+        (other.first <= this.second) -> Status.INTERSECT
+        (this.second < other.first) -> Status.DISJOINT
+        else -> throw Exception("$this $other")
     }
 
     /**
@@ -60,7 +59,7 @@ class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
                     else sensorCoverage.first to minMax.second
                 }
             } else it
-        }.toMutableList()
+        }.sortedBy{it.second}.sortedBy {it.first }.toMutableList()
 
         return temp.indices.mapNotNull { i ->
             var tempPair: Pair<Int, Int>? = temp[i]
@@ -71,9 +70,10 @@ class Day15 : DaySolver(15, "Beacon Exclusion Zone") {
                         Status.CONTAINED -> tempPair = null
                         Status.EQUALS, Status.CONTAINS -> temp[i + j + 1] = null
                         Status.DISJOINT -> {}
-                        Status.INTERSECT -> temp[i + j + 1] = if (newPair.first < tempPair.first)
-                            newPair.first to tempPair.first - 1
-                        else tempPair.second + 1 to newPair.second
+                        Status.INTERSECT -> { temp[i + j + 1] = null
+                            tempPair = tempPair.first to newPair.second
+                            temp[i] = tempPair
+                        }
                     }
             }
             tempPair
