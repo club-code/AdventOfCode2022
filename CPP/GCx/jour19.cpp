@@ -3,7 +3,7 @@
 #include <vector>
 #include "common.h"
 #include <memory>
-
+#include <queue>
 struct Cost{
     int ore = 0;
     int clay = 0;
@@ -95,26 +95,43 @@ struct State{
     int ore_robots = 1, clay_robots = 0, obsidian_robots = 0, geode_robots = 0;
     int ore = 0, clay = 0, obsidian = 0, geode = 0;
 
-    // State(std::shared_ptr<Blueprint> blueprint_ptr);
+    void harvest(){
+        ore += ore_robots;
+        clay += clay_robots;
+        obsidian += obsidian_robots;
+        geode += geode_robots;
+    };
+
+    void produce(){
+
+    }
 };
 
+void get_next_states(std::queue<State> states, State current_state){
+    
+}
 
+std::queue<State> unwind(std::queue<State> states){
+    while (!states.empty()){
+        State cur_state = states.front();
+        states.pop();
+        cur_state.harvest();
+
+        cur_state.
+    }
+}
 
 size_t jour19partie1(std::vector<std::string> lines){
     std::vector<std::shared_ptr<Blueprint>> blueprints;
-    std::vector<State> states;
+    std::queue<State> states;
     int i = 0;
     for (auto line : lines){
         blueprints.push_back(std::make_shared<Blueprint>(Blueprint{line}));
         State s{.blueprint = *(blueprints.end()-1)};
-        states.push_back(s);
-        std::cout << ((blueprints.end()-1)->get()) << " && " << &(*((states.end()-1)->blueprint))<<std::endl;
+        states.push(s);
+        // std::cout << ((blueprints.end()-1)->get()) << " && " << &(*((states.end()-1)->blueprint))<<std::endl;
         blueprints.back()->id = -i++;
         std::cout << states.back().blueprint->id << std::endl;
-    }
-
-    for (auto state : states){
-        std::cout << state.blueprint->id <<std::endl;
     }
 
     
